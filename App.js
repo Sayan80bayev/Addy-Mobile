@@ -4,8 +4,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { store } from "./store";
 import { Provider } from "react-redux";
-import { StatusBar } from "expo-status-bar";
-import LoginScreen from "./components/LoginScreen";
+import LoginScreen from "./components/auth/LoginScreen";
+import RegistrationScreen from "./components/auth/RegistrationScreen";
 import { AddList } from "./components/advertisements";
 
 const Stack = createStackNavigator();
@@ -15,7 +15,21 @@ const App = () => {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{
+              header: () => null, // Hide the default header
+            }}
+          />
+          <Stack.Screen
+            name="Register"
+            component={RegistrationScreen}
+            options={{
+              header: () => null, // Hide the default header
+            }}
+          />
+
           <Stack.Screen
             name="Advertisements"
             component={AddList}

@@ -6,10 +6,12 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  StatusBar,
+  Pressable,
 } from "react-native";
-import { useAuthenticateUserMutation } from "../store";
+import { useAuthenticateUserMutation } from "../../store";
 import * as SecureStore from "expo-secure-store";
-import { AlertError } from "./feedback";
+import { AlertError } from "../feedback";
 
 const LoginScreen = ({ navigation }) => {
   const [message, setMessage] = useState();
@@ -26,51 +28,65 @@ const LoginScreen = ({ navigation }) => {
         await SecureStore.setItemAsync("authToken", data.token);
         navigation.navigate("Advertisements");
       } else {
-        setMessage("Неверное имя пользователя или пароль");
+        setMessage("Wrong credentials");
       }
     } catch (error) {
       console.error("Login error:", error);
-      setMessage("Ошибка входа", "Пожалуйста, попробуйте еще раз.");
+      setMessage("Access error", "Please, try again.");
     }
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.main}>
-      <View style={styles.signup}>
-        <View style={styles.container}>
-          <View style={styles.signupContent}>
-            <View style={styles.formGroup}>
-              <TextInput
-                style={styles.formInput}
-                placeholder="Your Email"
-                value={formData.email}
-                onChangeText={(text) =>
-                  setFormData({ ...formData, email: text })
-                }
-              />
+    <>
+      <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
+
+      <ScrollView contentContainerStyle={styles.main}>
+        <View style={styles.signup}>
+          <View style={styles.container}>
+            <View style={styles.signupContent}>
+              {message && <AlertError message={message} />}
+              <View style={styles.formGroup}>
+                <TextInput
+                  style={styles.formInput}
+                  placeholder="Your Email"
+                  value={formData.email}
+                  onChangeText={(text) =>
+                    setFormData({ ...formData, email: text })
+                  }
+                />
+              </View>
+              <View style={styles.formGroup}>
+                <TextInput
+                  style={styles.formInput}
+                  placeholder="Password"
+                  secureTextEntry
+                  value={formData.password}
+                  onChangeText={(text) =>
+                    setFormData({ ...formData, password: text })
+                  }
+                />
+              </View>
+              <TouchableOpacity style={styles.formSubmit} onPress={handleLogin}>
+                <Text style={styles.formSubmitText}>Sign in</Text>
+              </TouchableOpacity>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  marginTop: 20,
+                }}
+              >
+                <Text style={styles.loginhere}>Don't have an account ? </Text>
+
+                <Pressable onPress={() => navigation.navigate("Register")}>
+                  <Text style={styles.loginhereLink}>Sign up here</Text>
+                </Pressable>
+              </View>
             </View>
-            <View style={styles.formGroup}>
-              <TextInput
-                style={styles.formInput}
-                placeholder="Password"
-                secureTextEntry
-                value={formData.password}
-                onChangeText={(text) =>
-                  setFormData({ ...formData, password: text })
-                }
-              />
-            </View>
-            <TouchableOpacity style={styles.formSubmit} onPress={handleLogin}>
-              <Text style={styles.formSubmitText}>Sign in</Text>
-            </TouchableOpacity>
-            <Text style={styles.loginhere}>
-              Don't have an account ?{" "}
-              <Text style={styles.loginhereLink}>Sign up here</Text>
-            </Text>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 };
 
@@ -142,7 +158,6 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   loginhere: {
-    marginTop: 20,
     fontSize: 14,
     color: "#555",
     textAlign: "center",
