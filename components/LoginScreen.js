@@ -1,33 +1,35 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
 import { useAuthenticateUserMutation } from "../store";
+import * as SecureStore from "expo-secure-store";
+import { AlertError } from "./feedback";
 
 const LoginScreen = ({ navigation }) => {
+  const [message, setMessage] = useState();
   const [authenticateUser] = useAuthenticateUserMutation();
-  //   console.log(authenticateUser);
   const [formData, setFormData] = useState({ email: "", password: "" });
+
   const handleLogin = async () => {
     try {
-      // Perform authentication using your mutation function
       const { data } = await authenticateUser({
         email: formData.email,
         password: formData.password,
       });
-      console.log(data);
-      // Assuming sauccessful login, navigate to the home screen
       if (data) {
+        await SecureStore.setItemAsync("authToken", data.token);
         navigation.navigate("Home");
       } else {
-        alert("Неверное имя пользователя или пароль");
+        setMessage("Неверное имя пользователя или пароль");
       }
     } catch (error) {
       console.error("Login error:", error);
-      alert("Ошибка входа. Пожалуйста, попробуйте еще раз.");
+      setMessage("Ошибка входа", "Пожалуйста, попробуйте еще раз.");
     }
   };
 
   return (
     <View style={styles.container}>
+      {message && <AlertError message={message} />}
       <Text style={styles.label}>Email</Text>
       <TextInput
         style={styles.input}
