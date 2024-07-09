@@ -8,9 +8,11 @@ const AddCard = ({ advertisement }) => {
     <View style={styles.card}>
       <Image source={{ uri: base64Image }} style={{ height: 200 }} />
       <View style={styles.cardDescription}>
-        <Text style={styles.cardHeader}>{advertisement.title}</Text>
-        <Text>{advertisement.price}$</Text>
-        <Text>{advertisement.category.category_name}</Text>
+        <Text style={[styles.text, styles.cardHeader]}>
+          {advertisement.title}
+        </Text>
+        <Text style={styles.text}>{advertisement.price}$</Text>
+        <Text style={styles.text}>{advertisement.category.category_name}</Text>
       </View>
     </View>
   );
