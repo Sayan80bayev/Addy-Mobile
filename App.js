@@ -6,7 +6,7 @@ import { store } from "./store";
 import { Provider } from "react-redux";
 
 import LoginScreen from "./components/LoginScreen";
-import HomeScreen from "./components/HomeScreen";
+import { AddList } from "./components/advertisements";
 
 const Stack = createStackNavigator();
 
@@ -16,7 +16,7 @@ const App = () => {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
           <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Home" component={AddList} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
