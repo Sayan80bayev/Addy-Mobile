@@ -24,7 +24,7 @@ const LoginScreen = ({ navigation }) => {
       });
       if (data) {
         await SecureStore.setItemAsync("authToken", data.token);
-        navigation.navigate("Home");
+        navigation.navigate("Advertisements");
       } else {
         setMessage("Неверное имя пользователя или пароль");
       }
