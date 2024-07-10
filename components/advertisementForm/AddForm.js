@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   TextInput,
@@ -7,7 +7,8 @@ import {
   StatusBar,
   Image,
   TouchableOpacity,
-  Button,
+  Keyboard,
+  Platform,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import * as ImagePicker from "expo-image-picker";
@@ -19,6 +20,23 @@ import { styles } from "./style";
 
 export const AddForm = () => {
   const [imageUris, setImageUris] = useState([]);
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
+      () => setKeyboardOpen(true)
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
+      () => setKeyboardOpen(false)
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   const pickImage = async () => {
     try {
@@ -28,15 +46,7 @@ export const AddForm = () => {
         quality: 1,
       });
 
-      if (!result.canceled) {
-        const response = await fetch(result.assets[0].uri);
-        // if (!response.ok) {
-        //   throw new Error("Failed to fetch image");
-        // }
-        const blob = await response.blob();
-        // console.log("Blob:", blob);
-
-        // Assuming imageUris is a state variable
+      if (!result.cancelled) {
         setImageUris([...imageUris, result.assets[0].uri]);
       }
     } catch (error) {
@@ -45,13 +55,17 @@ export const AddForm = () => {
   };
 
   const takePhoto = async () => {
-    const result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      quality: 1,
-    });
+    try {
+      const result = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        quality: 1,
+      });
 
-    if (!result.canceled) {
-      setImageUris([...imageUris, result.assets[0].uri]);
+      if (!result.cancelled) {
+        setImageUris([...imageUris, result.assets[0].uri]);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -70,14 +84,16 @@ export const AddForm = () => {
       <DeleteButton onPress={() => deleteImage(index)} />
     </TouchableOpacity>
   );
+
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
     { label: "Apple", value: "apple" },
     { label: "Banana", value: "banana" },
   ]);
+
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ height: "100%" }}>
       <StatusBar backgroundColor={"#232323"} barStyle={"light-content"} />
       <SafeAreaView
         style={{ backgroundColor: "#232323", flex: 1, padding: 20 }}
@@ -100,7 +116,7 @@ export const AddForm = () => {
             <TextInput style={styles.formInput} keyboardType="number-pad" />
           </View>
           <View style={styles.container}>
-            <Text style={styles.text}>Select a catergory*</Text>
+            <Text style={styles.text}>Select a category*</Text>
             <DropDownPicker
               style={{ backgroundColor: "#ff0083" }}
               textStyle={{ color: "white" }}

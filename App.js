@@ -61,6 +61,8 @@ const App = () => {
               headerStyle: {
                 backgroundColor: "#232323",
               },
+
+              tabBarHideOnKeyboard: true,
               headerShadowVisible: false,
               headerTintColor: "white",
             }}
