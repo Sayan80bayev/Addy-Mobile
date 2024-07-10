@@ -7,14 +7,16 @@ import { Provider } from "react-redux";
 import LoginScreen from "./components/auth/LoginScreen";
 import RegistrationScreen from "./components/auth/RegistrationScreen";
 import { AddList } from "./components/advertisements";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
+const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
+        {/* <Stack.Navigator initialRouteName="Login">
           <Stack.Screen
             name="Login"
             component={LoginScreen}
@@ -37,7 +39,36 @@ const App = () => {
               header: () => null, // Hide the default header
             }}
           />
-        </Stack.Navigator>
+        </Stack.Navigator> */}
+        <Tab.Navigator
+          screenOptions={{
+            tabBarStyle: { backgroundColor: "#FF0083" },
+            tabBarLabelStyle: { color: "white" }, // Change the color of the text
+          }}
+        >
+          <Tab.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{
+              header: () => null, // Hide the default header
+            }}
+          />
+          <Tab.Screen
+            name="Register"
+            component={RegistrationScreen}
+            options={{
+              header: () => null, // Hide the default header
+            }}
+          />
+
+          <Tab.Screen
+            name="Advertisements"
+            component={AddList}
+            options={{
+              header: () => null, // Hide the default header
+            }}
+          />
+        </Tab.Navigator>
       </NavigationContainer>
     </Provider>
   );
