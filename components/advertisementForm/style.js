@@ -24,6 +24,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   imageContainer: {
+    height: 120,
     flexDirection: "row", // Ensure images render horizontally
     marginTop: 10,
     marginBottom: 20,
