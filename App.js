@@ -8,6 +8,7 @@ import LoginScreen from "./components/auth/LoginScreen";
 import RegistrationScreen from "./components/auth/RegistrationScreen";
 import { AddList } from "./components/advertisements";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { AddForm } from "./components/advertisementForm/AddForm";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -51,6 +52,17 @@ const App = () => {
             component={LoginScreen}
             options={{
               header: () => null, // Hide the default header
+            }}
+          />
+          <Tab.Screen
+            name="New Add"
+            component={AddForm}
+            options={{
+              headerStyle: {
+                backgroundColor: "#232323",
+              },
+              headerShadowVisible: false,
+              headerTintColor: "white",
             }}
           />
           <Tab.Screen
