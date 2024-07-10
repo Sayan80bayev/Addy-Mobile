@@ -8,19 +8,19 @@ import {
   Button,
   Image,
   ScrollView,
+  TouchableOpacity,
+  FlatList, // Import FlatList
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { styles } from "./style";
 
 export const AddForm = () => {
-  const [formData, setFormData] = useState({});
   const [imageUris, setImageUris] = useState([]);
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
       quality: 1,
     });
 
@@ -40,6 +40,24 @@ export const AddForm = () => {
       setImageUris([...imageUris, result.assets[0].uri]);
     }
   };
+
+  const deleteImage = (index) => {
+    const newImageUris = [...imageUris];
+    newImageUris.splice(index, 1);
+    setImageUris(newImageUris);
+  };
+
+  const renderItem = ({ item, index }) => (
+    <View>
+      <Image source={{ uri: item }} style={styles.image} />
+      <TouchableOpacity
+        style={styles.deleteButton}
+        onPress={() => deleteImage(index)}
+      >
+        <Text>X</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <>
@@ -68,12 +86,14 @@ export const AddForm = () => {
             <View style={styles.buttonContainer}>
               <Button title="Pick an image from gallery" onPress={pickImage} />
               <Button title="Take a photo" onPress={takePhoto} />
-              <View style={styles.imageContainer}>
-                {imageUris.map((uri, index) => (
-                  <Image key={index} source={{ uri }} style={styles.image} />
-                ))}
-              </View>
             </View>
+            <FlatList
+              data={imageUris}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => index.toString()}
+              horizontal
+              style={styles.imageContainer}
+            />
           </View>
         </ScrollView>
       </SafeAreaView>

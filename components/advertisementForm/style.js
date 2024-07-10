@@ -23,4 +23,23 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  imageContainer: {
+    flexDirection: "row", // Ensure images render horizontally
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+    marginRight: 10,
+  },
+  deleteButton: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    borderRadius: 20,
+    padding: 5,
+  },
 });
