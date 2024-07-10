@@ -8,7 +8,9 @@ import LoginScreen from "./components/auth/LoginScreen";
 import RegistrationScreen from "./components/auth/RegistrationScreen";
 import { AddList } from "./components/advertisements";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
+import { AddForm } from "./components/advertisementForm/AddForm";
+import AdvertisementIcon from "./components/icons/AdvertisementIcon";
+import { View } from "react-native";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -41,16 +43,43 @@ const App = () => {
           />
         </Stack.Navigator> */}
         <Tab.Navigator
-          screenOptions={{
-            tabBarStyle: { backgroundColor: "#FF0083" },
-            tabBarLabelStyle: { color: "white" }, // Change the color of the text
-          }}
+          screenOptions={({ route }) => ({
+            tabBarStyle: { backgroundColor: "#FF0083", borderTopWidth: 0 },
+            tabBarLabelStyle: { color: "white" },
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+
+              if (route.name === "Advertisements") {
+                iconName = focused ? "#FF0083" : "white"; // Change color based on focus
+                return (
+                  <>
+                    <AdvertisementIcon fill={iconName} />
+                  </>
+                );
+              }
+
+              // Return your icon component with the determined color
+            },
+          })}
         >
           <Tab.Screen
             name="Login"
             component={LoginScreen}
             options={{
               header: () => null, // Hide the default header
+            }}
+          />
+          <Tab.Screen
+            name="New Add"
+            component={AddForm}
+            options={{
+              headerStyle: {
+                backgroundColor: "#232323",
+              },
+
+              tabBarHideOnKeyboard: true,
+              headerShadowVisible: false,
+              headerTintColor: "white",
             }}
           />
           <Tab.Screen
@@ -66,6 +95,16 @@ const App = () => {
             component={AddList}
             options={{
               header: () => null, // Hide the default header
+              // tabBarIcon: () => <AdvertisementIcon />,
+              tabBarActiveBackgroundColor: "#232323",
+              tabBarIconStyle: {
+                borderColor: "white",
+                // backgroundColor: "white",
+                borderBottomLeftRadius: 10,
+                borderBottomRigthRadius: 10,
+                // borderTopLeftRadius:""
+              },
+              // tabBarActiveTintColor: "#232323",
             }}
           />
         </Tab.Navigator>
