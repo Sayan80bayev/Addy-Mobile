@@ -33,13 +33,6 @@ export const styles = StyleSheet.create({
     height: 100,
     borderRadius: 8,
     marginRight: 10,
-  },
-  deleteButton: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
-    borderRadius: 20,
-    padding: 5,
+    marginTop: 10,
   },
 });

@@ -5,34 +5,48 @@ import {
   SafeAreaView,
   Text,
   StatusBar,
-  Button,
   Image,
-  ScrollView,
   TouchableOpacity,
-  FlatList, // Import FlatList
+  Button,
 } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
 import * as ImagePicker from "expo-image-picker";
+import DraggableFlatList from "react-native-draggable-flatlist";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import PlusButton from "../icons/PlusButton";
+import DeleteButton from "../icons/DeleteButton";
 import { styles } from "./style";
 
 export const AddForm = () => {
   const [imageUris, setImageUris] = useState([]);
 
   const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      quality: 1,
-    });
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        quality: 1,
+      });
 
-    if (!result.canceled) {
-      setImageUris([...imageUris, result.assets[0].uri]);
+      if (!result.canceled) {
+        const response = await fetch(result.assets[0].uri);
+        // if (!response.ok) {
+        //   throw new Error("Failed to fetch image");
+        // }
+        const blob = await response.blob();
+        // console.log("Blob:", blob);
+
+        // Assuming imageUris is a state variable
+        setImageUris([...imageUris, result.assets[0].uri]);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   const takePhoto = async () => {
     const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
-      aspect: [4, 3],
       quality: 1,
     });
 
@@ -47,56 +61,71 @@ export const AddForm = () => {
     setImageUris(newImageUris);
   };
 
-  const renderItem = ({ item, index }) => (
-    <View>
+  const renderItem = ({ item, index, drag }) => (
+    <TouchableOpacity
+      style={{ flexDirection: "row", overflow: "visible" }}
+      onLongPress={drag}
+    >
       <Image source={{ uri: item }} style={styles.image} />
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={() => deleteImage(index)}
-      >
-        <Text>X</Text>
-      </TouchableOpacity>
-    </View>
+      <DeleteButton onPress={() => deleteImage(index)} />
+    </TouchableOpacity>
   );
-
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    { label: "Apple", value: "apple" },
+    { label: "Banana", value: "banana" },
+  ]);
   return (
-    <>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <StatusBar backgroundColor={"#232323"} barStyle={"light-content"} />
       <SafeAreaView
         style={{ backgroundColor: "#232323", flex: 1, padding: 20 }}
       >
-        <ScrollView>
-          <View style={styles.form}>
-            <View>
-              <Text style={styles.text}>Enter a title*</Text>
-              <TextInput style={styles.formInput} />
-            </View>
-            <View>
-              <Text style={styles.text}>Enter a description*</Text>
-              <TextInput
-                style={[styles.formInput, styles.description]}
-                multiline
-                textAlignVertical="top"
-              />
-            </View>
-            <View>
-              <Text style={styles.text}>Enter a price*</Text>
-              <TextInput style={[styles.formInput]} keyboardType="number-pad" />
-            </View>
-            <View style={styles.buttonContainer}>
-              <Button title="Pick an image from gallery" onPress={pickImage} />
-              <Button title="Take a photo" onPress={takePhoto} />
-            </View>
-            <FlatList
-              data={imageUris}
-              renderItem={renderItem}
-              keyExtractor={(item, index) => index.toString()}
-              horizontal
-              style={styles.imageContainer}
+        <View style={styles.form}>
+          <View>
+            <Text style={styles.text}>Enter a title*</Text>
+            <TextInput style={styles.formInput} />
+          </View>
+          <View>
+            <Text style={styles.text}>Enter a description*</Text>
+            <TextInput
+              style={[styles.formInput, styles.description]}
+              multiline
+              textAlignVertical="top"
             />
           </View>
-        </ScrollView>
+          <View>
+            <Text style={styles.text}>Enter a price*</Text>
+            <TextInput style={styles.formInput} keyboardType="number-pad" />
+          </View>
+          <View style={styles.container}>
+            <Text style={styles.text}>Select a catergory*</Text>
+            <DropDownPicker
+              style={{ backgroundColor: "#ff0083" }}
+              textStyle={{ color: "white" }}
+              dropDownContainerStyle={{
+                backgroundColor: "#ff0083",
+              }}
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setItems}
+            />
+          </View>
+          <DraggableFlatList
+            data={imageUris}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+            horizontal
+            style={styles.imageContainer}
+            onDragEnd={({ data }) => setImageUris(data)}
+          />
+          <PlusButton onPress={pickImage} />
+        </View>
       </SafeAreaView>
-    </>
+    </GestureHandlerRootView>
   );
 };
