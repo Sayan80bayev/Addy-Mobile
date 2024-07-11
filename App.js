@@ -11,7 +11,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AddForm } from "./components/advertisementForm/AddForm";
 import { ColorfulTabBar } from "react-navigation-tabbar-collection";
 import Icon from "react-native-vector-icons/AntDesign";
-import { Keyboard, View, Animated } from "react-native";
+import { Keyboard, Animated, StyleSheet, View } from "react-native";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -22,22 +22,22 @@ const colorPalete = {
   danger: "#c9379d",
   warning: "#e6a919",
   info: "#00bcd4",
-  light: "#FFFFFF", //Background Color
-  dark: "#212529", //Foreground Color
+  light: "#FFFFFF", // Background Color
+  dark: "translusent", // Foreground Color
 };
 
 const App = () => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const tabBarHeight = useRef(new Animated.Value(60)).current;
+  const tabBarMargin = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
       () => {
         setKeyboardVisible(true);
-        Animated.timing(tabBarHeight, {
-          toValue: 0,
-          duration: 300,
+        Animated.timing(tabBarMargin, {
+          toValue: -60,
+          duration: 200,
           useNativeDriver: false,
         }).start();
       }
@@ -46,8 +46,8 @@ const App = () => {
       "keyboardDidHide",
       () => {
         setKeyboardVisible(false);
-        Animated.timing(tabBarHeight, {
-          toValue: 60,
+        Animated.timing(tabBarMargin, {
+          toValue: 0,
           duration: 300,
           useNativeDriver: false,
         }).start();
@@ -66,20 +66,21 @@ const App = () => {
         <Tab.Navigator
           tabBar={(props) => (
             <Animated.View
-              style={{ height: tabBarHeight, backgroundColor: "#232323" }}
+              style={[
+                styles.tabBarContainer,
+                {
+                  marginBottom: tabBarMargin,
+                },
+              ]}
             >
-              <ColorfulTabBar
-                height={60}
-                {...props}
-                colorPalette={colorPalete}
-                darkMode
-              />
+              <ColorfulTabBar {...props} colorPalette={colorPalete} darkMode />
             </Animated.View>
           )}
-          screenOptions={({ route }) => ({
-            tabBarLabelStyle: { color: "white" },
-            tabBarBackground: "#232323",
-          })}
+          screenOptions={{
+            tabBarStyle: {
+              marginBottom: tabBarMargin,
+            },
+          }}
         >
           <Tab.Screen
             name="Ads"
@@ -145,5 +146,13 @@ const App = () => {
     </Provider>
   );
 };
+
+const styles = StyleSheet.create({
+  tabBarContainer: {
+    overflow: "hidden",
+    backgroundColor: "translusent",
+    borderTopWidth: 0,
+  },
+});
 
 export default App;
