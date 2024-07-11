@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Keyboard,
   Platform,
+  Pressable,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import * as ImagePicker from "expo-image-picker";
@@ -16,8 +17,9 @@ import DraggableFlatList from "react-native-draggable-flatlist";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import PlusButton from "../icons/PlusButton";
 import DeleteButton from "../icons/DeleteButton";
+import { Button } from "react-native";
 import { styles } from "./style";
-
+import { EmptyImage } from "./EmptyImage";
 export const AddForm = () => {
   const [imageUris, setImageUris] = useState([]);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
@@ -135,14 +137,23 @@ export const AddForm = () => {
               setItems={setItems}
             />
           </View>
-          <DraggableFlatList
-            data={imageUris}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            horizontal
-            style={styles.imageContainer}
-            onDragEnd={({ data }) => setImageUris(data)}
-          />
+          {imageUris.length > 0 ? (
+            <DraggableFlatList
+              data={imageUris}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => index.toString()}
+              horizontal
+              style={styles.imageContainer}
+              onDragEnd={({ data }) => setImageUris(data)}
+            />
+          ) : (
+            <EmptyImage style={styles.imageContainer} />
+          )}
+          <TouchableOpacity title="Submit" style={styles.submitButton}>
+            <Text style={[styles.text, { textAlign: "center", fontSize: 20 }]}>
+              Submit
+            </Text>
+          </TouchableOpacity>
           <PlusButton onPress={pickImage} />
         </View>
       </SafeAreaView>

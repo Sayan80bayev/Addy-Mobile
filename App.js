@@ -14,7 +14,6 @@ import Icon from "react-native-vector-icons/AntDesign";
 import { Keyboard, Animated, StyleSheet, View } from "react-native";
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
 const colorPalete = {
   primary: "#ff0083",
   secondary: "#6c757d",
@@ -37,7 +36,7 @@ const App = () => {
         setKeyboardVisible(true);
         Animated.timing(tabBarMargin, {
           toValue: -60,
-          duration: 200,
+          duration: 300,
           useNativeDriver: false,
         }).start();
       }
@@ -150,7 +149,7 @@ const App = () => {
 const styles = StyleSheet.create({
   tabBarContainer: {
     overflow: "hidden",
-    backgroundColor: "translusent",
+    backgroundColor: "#232323",
     borderTopWidth: 0,
   },
 });
