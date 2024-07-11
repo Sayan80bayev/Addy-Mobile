@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { store } from "./store";
@@ -9,75 +9,123 @@ import RegistrationScreen from "./components/auth/RegistrationScreen";
 import { AddList } from "./components/advertisements";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AddForm } from "./components/advertisementForm/AddForm";
-import AdvertisementIcon from "./components/icons/AdvertisementIcon";
-import { View } from "react-native";
+import { ColorfulTabBar } from "react-navigation-tabbar-collection";
+import Icon from "react-native-vector-icons/AntDesign";
+import { Keyboard, View, Animated } from "react-native";
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+const colorPalete = {
+  primary: "#ff0083",
+  secondary: "#6c757d",
+  success: "#198754",
+  danger: "#c9379d",
+  warning: "#e6a919",
+  info: "#00bcd4",
+  light: "#FFFFFF", //Background Color
+  dark: "#212529", //Foreground Color
+};
 
 const App = () => {
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const tabBarHeight = useRef(new Animated.Value(60)).current;
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true);
+        Animated.timing(tabBarHeight, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: false,
+        }).start();
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false);
+        Animated.timing(tabBarHeight, {
+          toValue: 60,
+          duration: 300,
+          useNativeDriver: false,
+        }).start();
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
   return (
     <Provider store={store}>
       <NavigationContainer>
-        {/* <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{
-              header: () => null, // Hide the default header
-            }}
-          />
-          <Stack.Screen
-            name="Register"
-            component={RegistrationScreen}
-            options={{
-              header: () => null, // Hide the default header
-            }}
-          />
-
-          <Stack.Screen
-            name="Advertisements"
-            component={AddList}
-            options={{
-              header: () => null, // Hide the default header
-            }}
-          />
-        </Stack.Navigator> */}
         <Tab.Navigator
+          tabBar={(props) => (
+            <Animated.View
+              style={{ height: tabBarHeight, backgroundColor: "#232323" }}
+            >
+              <ColorfulTabBar
+                height={60}
+                {...props}
+                colorPalette={colorPalete}
+                darkMode
+              />
+            </Animated.View>
+          )}
           screenOptions={({ route }) => ({
-            tabBarStyle: { backgroundColor: "#FF0083", borderTopWidth: 0 },
             tabBarLabelStyle: { color: "white" },
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-
-              if (route.name === "Advertisements") {
-                iconName = focused ? "#FF0083" : "white"; // Change color based on focus
-                return (
-                  <>
-                    <AdvertisementIcon fill={iconName} />
-                  </>
-                );
-              }
-
-              // Return your icon component with the determined color
-            },
+            tabBarBackground: "#232323",
           })}
         >
+          <Tab.Screen
+            name="Ads"
+            component={AddList}
+            options={{
+              tabBarIcon: ({ focused, color, size }) => (
+                <Icon name="home" size={size} color={color} />
+              ),
+              header: () => null, // Hide the default header
+              tabBarActiveBackgroundColor: "#232323",
+            }}
+          />
           <Tab.Screen
             name="Login"
             component={LoginScreen}
             options={{
               header: () => null, // Hide the default header
+              tabBarIcon: ({ focused, color, size }) => (
+                <Icon name="search1" size={size} color={color} />
+              ),
             }}
           />
           <Tab.Screen
             name="New Add"
             component={AddForm}
             options={{
+              tabBarIcon: ({ focused, color, size }) => (
+                <Icon name="plussquareo" size={size} color={color} />
+              ),
               headerStyle: {
                 backgroundColor: "#232323",
               },
-
-              tabBarHideOnKeyboard: true,
+              headerShadowVisible: false,
+              headerTintColor: "white",
+            }}
+          />
+          <Tab.Screen
+            name="Search"
+            component={AddForm}
+            options={{
+              tabBarIcon: ({ focused, color, size }) => (
+                <Icon name="bells" size={size} color={color} />
+              ),
+              headerStyle: {
+                backgroundColor: "#232323",
+              },
               headerShadowVisible: false,
               headerTintColor: "white",
             }}
@@ -87,24 +135,9 @@ const App = () => {
             component={RegistrationScreen}
             options={{
               header: () => null, // Hide the default header
-            }}
-          />
-
-          <Tab.Screen
-            name="Advertisements"
-            component={AddList}
-            options={{
-              header: () => null, // Hide the default header
-              // tabBarIcon: () => <AdvertisementIcon />,
-              tabBarActiveBackgroundColor: "#232323",
-              tabBarIconStyle: {
-                borderColor: "white",
-                // backgroundColor: "white",
-                borderBottomLeftRadius: 10,
-                borderBottomRigthRadius: 10,
-                // borderTopLeftRadius:""
-              },
-              // tabBarActiveTintColor: "#232323",
+              tabBarIcon: ({ focused, color, size }) => (
+                <Icon name="user" size={size} color={color} />
+              ),
             }}
           />
         </Tab.Navigator>

@@ -96,7 +96,11 @@ export const AddForm = () => {
     <GestureHandlerRootView style={{ height: "100%" }}>
       <StatusBar backgroundColor={"#232323"} barStyle={"light-content"} />
       <SafeAreaView
-        style={{ backgroundColor: "#232323", flex: 1, padding: 20 }}
+        style={{
+          backgroundColor: "#232323",
+          flex: 1,
+          padding: 20,
+        }}
       >
         <View style={styles.form}>
           <View>
