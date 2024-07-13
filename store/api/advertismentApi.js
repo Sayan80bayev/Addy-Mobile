@@ -1,16 +1,20 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import * as SecureStore from "expo-secure-store";
+
 export const advertisementApi = createApi({
   reducerPath: "advertisementApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `http://192.168.98.67:3001`,
-    // baseUrl: `http://192.168.150.223:3001`,
-    // prepareHeaders: (headers, { getState }) => {
-    //   const token = localStorage.getItem("authToken");
-    //   if (token) {
-    //     headers.set("Authorization", `Bearer ${token}`);
-    //   }
-    //   return headers;
-    // },
+    // baseUrl: `http://192.168.98.67:3001`,
+    // baseUrl: `http://127.0.0.1:3001`,
+    baseUrl: `http://192.168.150.223:3001`,
+    prepareHeaders: async (headers, { getState }) => {
+      const token = await SecureStore.getItemAsync("authToken");
+      console.log(token);
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   tagTypes: ["Advertisements"],
   endpoints: (build) => ({
