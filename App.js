@@ -12,7 +12,7 @@ import { AddForm } from "./components/advertisementForm/AddForm";
 import { ColorfulTabBar } from "react-navigation-tabbar-collection";
 import Icon from "react-native-vector-icons/AntDesign";
 import { Keyboard, Animated, StyleSheet, View } from "react-native";
-
+import { Profile } from "./components/profile/Profile";
 const Tab = createBottomTabNavigator();
 const colorPalete = {
   primary: "#ff0083",
@@ -131,8 +131,8 @@ const App = () => {
             }}
           />
           <Tab.Screen
-            name="Register"
-            component={RegistrationScreen}
+            name="Profile"
+            component={Profile}
             options={{
               header: () => null, // Hide the default header
               tabBarIcon: ({ focused, color, size }) => (

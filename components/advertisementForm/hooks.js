@@ -4,7 +4,10 @@ import * as ImagePicker from "expo-image-picker";
 import DeleteButton from "../icons/DeleteButton";
 import { styles } from "./style";
 import { useGetCatsQuery, usePostAddsMutation } from "../../store";
+import axios from "axios";
+import * as SecureStorage from "expo-secure-store";
 export const usePostNewAdd = () => {
+  // global.FormData = global.originalFormData;
   const [postAdd] = usePostAddsMutation();
   const [imageUris, setImageUris] = useState([]);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
@@ -84,21 +87,27 @@ export const usePostNewAdd = () => {
       <DeleteButton onPress={() => deleteImage(index)} />
     </TouchableOpacity>
   );
-  const hanndlePost = async () => {
+  const handlePost = async () => {
     const formDataToSend = new FormData();
 
-    const advertisementBlob = new Blob([JSON.stringify(formData)], {
+    const advertisementBlob = new Blob([formData], {
       type: "application/json",
     });
-    formDataToSend.append("advertisement", advertisementBlob);
-    for (const image of imageUris) {
-      formDataToSend.append("files", image);
-    }
+    formDataToSend.append("advertisement", JSON.stringify(advertisementBlob));
+    imageUris.forEach((img) => {
+      const media = {
+        uri: img,
+        type: "image/jpeg",
+        name: "profile.jpg",
+      };
+      // const file = new File([blob]);
+      formDataToSend.append("files", media);
+    });
     try {
       const result = await postAdd(formDataToSend);
       console.log(result);
     } catch (error) {
-      console.log(error);
+      console.log(error.request);
     }
   };
   return {
@@ -115,6 +124,6 @@ export const usePostNewAdd = () => {
     categories,
     formData,
     setFormData,
-    hanndlePost,
+    handlePost,
   };
 };

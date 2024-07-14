@@ -28,7 +28,7 @@ export const AddForm = () => {
     setImageUris,
     formData,
     setFormData,
-    hanndlePost,
+    handlePost,
   } = usePostNewAdd();
   const categoriesToDrop = categories.map((cat) => ({
     label: cat.category_name,
@@ -108,7 +108,7 @@ export const AddForm = () => {
           <TouchableOpacity
             title="Submit"
             style={styles.submitButton}
-            onPress={hanndlePost}
+            onPress={handlePost}
           >
             <Text style={[styles.text, { textAlign: "center", fontSize: 20 }]}>
               Submit
