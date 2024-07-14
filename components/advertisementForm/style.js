@@ -5,9 +5,9 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   formInput: {
-    borderColor: "gray",
+    borderColor: "#FF0083",
     borderWidth: 1,
-    borderRadius: 4,
+    borderRadius: 5,
     padding: 10,
     color: "white",
     marginVertical: 10,
@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
   imageContainer: {
     height: 120,
     flexDirection: "row", // Ensure images render horizontally
-    marginTop: 10,
+    marginTop: 20,
     marginBottom: 20,
   },
   image: {
@@ -35,5 +35,11 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     marginRight: 10,
     marginTop: 10,
+  },
+  submitButton: {
+    height: 50,
+    padding: 10,
+    backgroundColor: "#ff0083",
+    borderRadius: 10,
   },
 });

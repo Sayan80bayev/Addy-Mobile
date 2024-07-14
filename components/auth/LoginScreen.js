@@ -13,6 +13,7 @@ import { useAuthenticateUserMutation } from "../../store";
 import * as SecureStore from "expo-secure-store";
 import { AlertError } from "../feedback";
 import { styles } from "./styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = ({ navigation }) => {
   const [message, setMessage] = useState();
@@ -26,7 +27,7 @@ const LoginScreen = ({ navigation }) => {
         password: formData.password,
       });
       if (data) {
-        await SecureStore.setItemAsync("authToken", data.token);
+        await AsyncStorage.setItem("authToken", data.token);
         navigation.navigate("Advertisements");
       } else {
         setMessage("Wrong credentials");
