@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   card: {
     // backgroundColor: "#232323",
+    width: "48%",
     borderColor: "#FF0083",
     borderRadius: 10,
     borderWidth: 2,
@@ -12,7 +13,6 @@ export const styles = StyleSheet.create({
   },
   cardContainer: {
     backgroundColor: "#232323",
-
     flex: 1,
     paddingLeft: 20,
     paddingRight: 20,
@@ -22,5 +22,12 @@ export const styles = StyleSheet.create({
   },
   text: {
     color: "white",
+  },
+  category: {
+    backgroundColor: "#434343",
+    borderRadius: 5,
+    alignItems: "center",
+    alignSelf: "flex-start",
+    padding: 3,
   },
 });

@@ -13,6 +13,7 @@ import { ColorfulTabBar } from "react-navigation-tabbar-collection";
 import Icon from "react-native-vector-icons/AntDesign";
 import { Keyboard, Animated, StyleSheet, View } from "react-native";
 import { Profile } from "./components/profile/Profile";
+import { FullAdd } from "./components/fullAdd/FullAdd";
 
 const Tab = createBottomTabNavigator();
 const AuthStack = createStackNavigator();
@@ -154,6 +155,11 @@ const App = () => {
           <MainStack.Screen
             name="Register"
             component={RegistrationScreen}
+            options={{ headerShown: false }}
+          />
+          <MainStack.Screen
+            name="FullAdd"
+            component={FullAdd}
             options={{ headerShown: false }}
           />
         </MainStack.Navigator>

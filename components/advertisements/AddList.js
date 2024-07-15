@@ -7,9 +7,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "react-native";
 import { styles } from "./style";
 
-export const AddList = () => {
+export const AddList = ({ navigation }) => {
   const { data: advertisements, refetch, isFetching } = useGetAddsQuery();
-
+  const fullAddNavigate = (id) => {
+    return navigation.navigate("FullAdd", { id });
+  };
   return (
     <>
       <StatusBar backgroundColor="#232323" barStyle="light-content" />
@@ -18,10 +20,14 @@ export const AddList = () => {
           data={advertisements}
           style={styles.cardContainer}
           keyExtractor={(item) => item.id.toString()} // Add a key extractor if there's an id
-          renderItem={({ item }) => <AddCard advertisement={item} />}
+          renderItem={({ item }) => (
+            <AddCard advertisement={item} fullAddNavigate={fullAddNavigate} />
+          )}
           ItemSeparatorComponent={<View style={{ height: 20 }}></View>}
           refreshing={isFetching}
           onRefresh={refetch}
+          numColumns={2}
+          columnWrapperStyle={{ justifyContent: "space-between" }} // Space items between columns
         />
       </SafeAreaView>
     </>

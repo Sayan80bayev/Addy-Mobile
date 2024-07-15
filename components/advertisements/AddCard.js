@@ -1,20 +1,27 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import { styles } from "./style";
 
-const AddCard = ({ advertisement }) => {
+const AddCard = ({ advertisement, fullAddNavigate }) => {
   const base64Image = `data:image/jpeg;base64,${advertisement.images[0].imageData}`;
   return (
-    <View style={styles.card}>
-      <Image source={{ uri: base64Image }} style={{ height: 200 }} />
+    <Pressable
+      style={styles.card}
+      onPress={() => fullAddNavigate(advertisement.id)}
+    >
+      <Image source={{ uri: base64Image }} style={{ height: 140 }} />
       <View style={styles.cardDescription}>
         <Text style={[styles.text, styles.cardHeader]}>
           {advertisement.title}
         </Text>
         <Text style={styles.text}>{advertisement.price}$</Text>
-        <Text style={styles.text}>{advertisement.category.category_name}</Text>
+        <View style={styles.category}>
+          <Text style={[styles.text]}>
+            {advertisement.category.category_name}
+          </Text>
+        </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
