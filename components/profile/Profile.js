@@ -6,7 +6,6 @@ import { styles } from "./styles";
 
 export const Profile = () => {
   const { user } = useProfile();
-  // console.log(user);
   return (
     <View style={styles.main}>
       <UserInfo user={user} />

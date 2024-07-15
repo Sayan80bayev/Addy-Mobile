@@ -18,7 +18,6 @@ export const useProfile = () => {
   useEffect(() => {
     const fetchToken = async () => {
       const token = await SecureStore.getItemAsync("authToken");
-      console.log(token);
       if (token) {
         const decodedToken = jwtDecode("" + token);
         setEmail(decodedToken.sub);

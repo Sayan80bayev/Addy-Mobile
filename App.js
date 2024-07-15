@@ -28,7 +28,8 @@ const colorPalete = {
 const App = () => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const tabBarMargin = useRef(new Animated.Value(0)).current;
-
+  Blob.prototype[Symbol.toStringTag] = "Blob";
+  File.prototype[Symbol.toStringTag] = "File";
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",

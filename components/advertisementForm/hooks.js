@@ -5,7 +5,9 @@ import DeleteButton from "../icons/DeleteButton";
 import { styles } from "./style";
 import { useGetCatsQuery, usePostAddsMutation } from "../../store";
 import axios from "axios";
-import * as SecureStorage from "expo-secure-store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as FileSystem from "expo-file-system";
+
 export const usePostNewAdd = () => {
   // global.FormData = global.originalFormData;
   const [postAdd] = usePostAddsMutation();
@@ -15,7 +17,7 @@ export const usePostNewAdd = () => {
     title: "",
     price: "",
     description: "",
-    category: { category_id: "" },
+    category: { category_id: "", category_name: "" },
   });
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -87,29 +89,73 @@ export const usePostNewAdd = () => {
       <DeleteButton onPress={() => deleteImage(index)} />
     </TouchableOpacity>
   );
+  const createBlob = (data) => {
+    return new Blob([JSON.stringify(data)], { type: "application/json" });
+  };
+  const saveBlobToFile = async (blob) => {
+    const base64Data = await blobToBase64(blob);
+    const fileUri = FileSystem.documentDirectory + "advertisement.json";
+    await FileSystem.writeAsStringAsync(fileUri, base64Data, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+    return fileUri;
+  };
+
+  // Helper function to convert blob to base64
+  const blobToBase64 = (blob) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        resolve(reader.result.split(",")[1]);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  };
   const handlePost = async () => {
     const formDataToSend = new FormData();
-
-    const advertisementBlob = new Blob([formData], {
+    const token = await AsyncStorage.getItem("authToken");
+    const advertisementBlob = createBlob(formData);
+    const advertisementUri = await saveBlobToFile(advertisementBlob);
+    formDataToSend.append("advertisement", {
+      uri: advertisementUri,
+      name: "advertisement.json",
       type: "application/json",
     });
-    formDataToSend.append("advertisement", JSON.stringify(advertisementBlob));
-    imageUris.forEach((img) => {
-      const media = {
-        uri: img,
-        type: "image/jpeg",
-        name: "profile.jpg",
-      };
-      // const file = new File([blob]);
-      formDataToSend.append("files", media);
-    });
+
+    // formDataToSend.append("advertisement", advertisementBlob);
+
+    for (const uri of imageUris) {
+      const fileUri = uri.replace("file://", "");
+      // console.log(fileUri);
+      const fileName = fileUri.split("/").pop();
+      const fileType = fileName.endsWith(".png") ? "image/png" : "image/jpeg";
+      formDataToSend.append("files", {
+        uri: uri,
+        type: fileType,
+        name: fileName,
+      });
+    }
+
     try {
-      const result = await postAdd(formDataToSend);
+      const result = await axios.post(
+        // "http://192.168.150.223:3001/api/secured/create",
+        "http://192.168.98.67:3001/api/secured/create",
+        formDataToSend,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+          transformRequest: (d) => d,
+        }
+      );
       console.log(result);
     } catch (error) {
-      console.log(error.request);
+      console.log(JSON.stringify(error.request._response));
     }
   };
+
   return {
     imageUris,
     open,
