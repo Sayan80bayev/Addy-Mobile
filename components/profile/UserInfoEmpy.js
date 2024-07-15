@@ -12,9 +12,10 @@ export const UserInfoEmpty = ({ navigateToLogin }) => {
         width={60}
       />
       <View style={styles.textContainer}>
-        <Text style={[styles.text, styles.username]}>Not signed in</Text>
-        <Pressable onPress={navigateToLogin}>
-          <Text style={styles.text}>{"Sign in ->"}</Text>
+        <Pressable onPress={navigateToLogin} style={styles.signIn}>
+          <Text style={[styles.text, { fontSize: 24, fontWeight: 900 }]}>
+            {"Sign in / Sign up"}
+          </Text>
         </Pressable>
       </View>
     </View>

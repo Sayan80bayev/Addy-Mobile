@@ -29,4 +29,7 @@ export const styles = StyleSheet.create({
     height: 40,
     justifyContent: "center",
   },
+  signIn: {
+    alignItems: "center",
+  },
 });

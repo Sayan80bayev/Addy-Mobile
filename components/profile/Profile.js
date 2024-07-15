@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { View, Image, Text, Pressable, TouchableOpacity } from "react-native";
+import React from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import { useProfile } from "./hooks";
 import { UserInfo } from "./UserInfo";
 import { styles } from "./styles";
 import { UserInfoEmpty } from "./UserInfoEmpy";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "@react-navigation/native";
 export const Profile = ({ navigation }) => {
   const navigateToLogin = () => {
     return navigation.navigate("Login");
   };
   const { user, logout } = useProfile();
 
-  // const user = null;
   return (
     <View style={styles.main}>
       {user ? (
