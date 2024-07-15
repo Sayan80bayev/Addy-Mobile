@@ -3,13 +3,13 @@ export const styles = StyleSheet.create({
   main: {
     flex: 1,
     backgroundColor: "#232323",
+    padding: 20,
   },
   text: {
     color: "white",
   },
   userInfo: {
     flexDirection: "row",
-    padding: 20,
   },
   avatar: {
     borderRadius: 30,
@@ -20,6 +20,13 @@ export const styles = StyleSheet.create({
   },
   textContainer: {
     marginLeft: 10,
+    justifyContent: "center",
+  },
+  logout: {
+    alignItems: "center",
+    backgroundColor: "#FF0083",
+    borderRadius: 10,
+    height: 40,
     justifyContent: "center",
   },
 });

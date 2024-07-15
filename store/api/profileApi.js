@@ -3,8 +3,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const profileApi = createApi({
   reducerPath: "profileApi",
   baseQuery: fetchBaseQuery({
-    // baseUrl: "http://192.168.150.223:3001/user",
-    baseUrl: "http://192.168.98.67:3001/user",
+    baseUrl: "http://192.168.150.223:3001/user",
+    // baseUrl: "http://192.168.98.67:3001/user",
     prepareHeaders: async (headers, { getState }) => {
       const token = await AsyncStorage.getItem("authToken");
       if (token) {

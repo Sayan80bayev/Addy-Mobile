@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useGetUserQuery } from "../../store";
 import { jwtDecode } from "jwt-decode";
-import * as SecureStore from "expo-secure-store";
 import { decode as atob, encode as btoa } from "base-64";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
 
 // Polyfill for atob and btoa
 if (typeof global.atob === "undefined") {
@@ -14,26 +15,50 @@ if (typeof global.btoa === "undefined") {
 
 export const useProfile = () => {
   const [email, setEmail] = useState(null);
+  const [token, setToken] = useState(null);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchToken = async () => {
+        const authToken = await AsyncStorage.getItem("authToken");
+        setToken(authToken);
+      };
+      fetchToken();
+    }, [])
+  );
 
   useEffect(() => {
-    const fetchToken = async () => {
-      const token = await SecureStore.getItemAsync("authToken");
+    const loadUser = async () => {
       if (token) {
         const decodedToken = jwtDecode("" + token);
         setEmail(decodedToken.sub);
-        console.log(decodedToken);
-        console.log(token);
       }
     };
+    loadUser();
+  }, [token]);
 
-    fetchToken();
-  }, []);
+  const { data, refetch } = useGetUserQuery(email);
+  const [user, setUser] = useState();
 
-  const { data: user = { avatar: "" } } = useGetUserQuery(email, {
-    skip: !email,
-  });
+  useEffect(() => {
+    if (email) {
+      refetch();
+    }
+  }, [email]);
+
+  useEffect(() => {
+    setUser(data);
+  }, [data]);
+
+  const logout = async () => {
+    await AsyncStorage.removeItem("authToken");
+    setToken(null);
+    setEmail(null);
+    setUser(null);
+  };
 
   return {
     user,
+    logout,
   };
 };
