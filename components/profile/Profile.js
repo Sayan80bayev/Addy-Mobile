@@ -3,12 +3,21 @@ import { View, Image, Text } from "react-native";
 import { useProfile } from "./hooks";
 import { UserInfo } from "./UserInfo";
 import { styles } from "./styles";
+import { UserInfoEmpty } from "./UserInfoEmpy";
+export const Profile = ({ navigation }) => {
+  const navigateToLogin = () => {
+    return navigation.navigate("Login");
+  };
 
-export const Profile = () => {
-  const { user } = useProfile();
+  // const { user } = useProfile();
+  const user = null;
   return (
     <View style={styles.main}>
-      <UserInfo user={user} />
+      {user ? (
+        <UserInfo user={user} />
+      ) : (
+        <UserInfoEmpty navigateToLogin={navigateToLogin} />
+      )}
     </View>
   );
 };
