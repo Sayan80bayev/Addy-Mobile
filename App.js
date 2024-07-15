@@ -13,7 +13,11 @@ import { ColorfulTabBar } from "react-navigation-tabbar-collection";
 import Icon from "react-native-vector-icons/AntDesign";
 import { Keyboard, Animated, StyleSheet, View } from "react-native";
 import { Profile } from "./components/profile/Profile";
+
 const Tab = createBottomTabNavigator();
+const AuthStack = createStackNavigator();
+const MainStack = createStackNavigator();
+
 const colorPalete = {
   primary: "#ff0083",
   secondary: "#6c757d",
@@ -25,11 +29,86 @@ const colorPalete = {
   dark: "translusent", // Foreground Color
 };
 
+const MainTabs = ({ tabBarMargin }) => (
+  <Tab.Navigator
+    tabBar={(props) => (
+      <Animated.View
+        style={[
+          styles.tabBarContainer,
+          {
+            marginBottom: tabBarMargin,
+          },
+        ]}
+      >
+        <ColorfulTabBar {...props} colorPalette={colorPalete} darkMode />
+      </Animated.View>
+    )}
+    screenOptions={{
+      tabBarStyle: {
+        marginBottom: tabBarMargin,
+      },
+    }}
+  >
+    <Tab.Screen
+      name="Ads"
+      component={AddList}
+      options={{
+        tabBarIcon: ({ focused, color, size }) => (
+          <Icon name="home" size={size} color={color} />
+        ),
+        headerStyle: {
+          backgroundColor: "#232323",
+          shadowColor: "#000000",
+        },
+        headerTintColor: "white",
+        tabBarActiveBackgroundColor: "#232323",
+      }}
+    />
+    <Tab.Screen
+      name="New Add"
+      component={AddForm}
+      options={{
+        tabBarIcon: ({ focused, color, size }) => (
+          <Icon name="plussquareo" size={size} color={color} />
+        ),
+        headerStyle: {
+          backgroundColor: "#232323",
+        },
+        headerShadowVisible: false,
+        headerTintColor: "white",
+      }}
+    />
+    <Tab.Screen
+      name="Search"
+      component={AddForm}
+      options={{
+        tabBarIcon: ({ focused, color, size }) => (
+          <Icon name="bells" size={size} color={color} />
+        ),
+        headerStyle: {
+          backgroundColor: "#232323",
+        },
+        headerShadowVisible: false,
+        headerTintColor: "white",
+      }}
+    />
+    <Tab.Screen
+      name="Profile"
+      component={Profile}
+      options={{
+        header: () => null, // Hide the default header
+        tabBarIcon: ({ focused, color, size }) => (
+          <Icon name="user" size={size} color={color} />
+        ),
+      }}
+    />
+  </Tab.Navigator>
+);
+
 const App = () => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const tabBarMargin = useRef(new Animated.Value(0)).current;
-  Blob.prototype[Symbol.toStringTag] = "Blob";
-  File.prototype[Symbol.toStringTag] = "File";
+
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
@@ -63,85 +142,21 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Tab.Navigator
-          tabBar={(props) => (
-            <Animated.View
-              style={[
-                styles.tabBarContainer,
-                {
-                  marginBottom: tabBarMargin,
-                },
-              ]}
-            >
-              <ColorfulTabBar {...props} colorPalette={colorPalete} darkMode />
-            </Animated.View>
-          )}
-          screenOptions={{
-            tabBarStyle: {
-              marginBottom: tabBarMargin,
-            },
-          }}
-        >
-          <Tab.Screen
-            name="Ads"
-            component={AddList}
-            options={{
-              tabBarIcon: ({ focused, color, size }) => (
-                <Icon name="home" size={size} color={color} />
-              ),
-              header: () => null, // Hide the default header
-              tabBarActiveBackgroundColor: "#232323",
-            }}
-          />
-          <Tab.Screen
+        <MainStack.Navigator>
+          <MainStack.Screen name="MainTabs" options={{ headerShown: false }}>
+            {() => <MainTabs tabBarMargin={tabBarMargin} />}
+          </MainStack.Screen>
+          <MainStack.Screen
             name="Login"
             component={LoginScreen}
-            options={{
-              header: () => null, // Hide the default header
-              tabBarIcon: ({ focused, color, size }) => (
-                <Icon name="search1" size={size} color={color} />
-              ),
-            }}
+            options={{ headerShown: false }}
           />
-          <Tab.Screen
-            name="New Add"
-            component={AddForm}
-            options={{
-              tabBarIcon: ({ focused, color, size }) => (
-                <Icon name="plussquareo" size={size} color={color} />
-              ),
-              headerStyle: {
-                backgroundColor: "#232323",
-              },
-              headerShadowVisible: false,
-              headerTintColor: "white",
-            }}
+          <MainStack.Screen
+            name="Register"
+            component={RegistrationScreen}
+            options={{ headerShown: false }}
           />
-          <Tab.Screen
-            name="Search"
-            component={AddForm}
-            options={{
-              tabBarIcon: ({ focused, color, size }) => (
-                <Icon name="bells" size={size} color={color} />
-              ),
-              headerStyle: {
-                backgroundColor: "#232323",
-              },
-              headerShadowVisible: false,
-              headerTintColor: "white",
-            }}
-          />
-          <Tab.Screen
-            name="Profile"
-            component={Profile}
-            options={{
-              header: () => null, // Hide the default header
-              tabBarIcon: ({ focused, color, size }) => (
-                <Icon name="user" size={size} color={color} />
-              ),
-            }}
-          />
-        </Tab.Navigator>
+        </MainStack.Navigator>
       </NavigationContainer>
     </Provider>
   );

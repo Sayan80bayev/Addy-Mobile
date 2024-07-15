@@ -28,7 +28,7 @@ const LoginScreen = ({ navigation }) => {
       });
       if (data) {
         await AsyncStorage.setItem("authToken", data.token);
-        navigation.navigate("Advertisements");
+        navigation.navigate("Ads");
       } else {
         setMessage("Wrong credentials");
       }

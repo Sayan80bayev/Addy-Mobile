@@ -5,8 +5,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const advertisementApi = createApi({
   reducerPath: "advertisementApi",
   baseQuery: fetchBaseQuery({
-    // baseUrl: `http://192.168.150.223:3001`,
-    baseUrl: `http://192.168.98.67:3001`,
+    baseUrl: `http://192.168.150.223:3001`,
+    // baseUrl: `http://192.168.98.67:3001`,
     prepareHeaders: async (headers, { getState }) => {
       const token = await AsyncStorage.getItem("authToken");
       console.log(token);

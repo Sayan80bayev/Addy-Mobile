@@ -1,14 +1,21 @@
 import { View, Text, Image } from "react-native";
+import { styles } from "./styles";
+
 export const UserInfo = ({ user }) => {
+  const username = user.name ? user.name.toUpperCase() : "";
+
   return (
-    <View>
+    <View style={styles.userInfo}>
       <Image
+        style={styles.avatar}
         source={{ uri: `data:image/jpeg;base64,${user.avatar}` }}
-        height={100}
-        width={100}
+        height={60}
+        width={60}
       />
-      <Text>{user.email}</Text>
-      <Text>{user.name}</Text>
+      <View style={styles.textContainer}>
+        <Text style={[styles.text, styles.username]}>{username}</Text>
+        <Text style={styles.text}>{user.email}</Text>
+      </View>
     </View>
   );
 };

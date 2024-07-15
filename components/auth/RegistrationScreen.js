@@ -53,7 +53,7 @@ const RegistrationScreen = ({ navigation }) => {
       });
       if (data) {
         await SecureStore.setItemAsync("authToken", data.token);
-        navigation.navigate("Advertisements");
+        navigation.navigate("Ads");
       } else {
         setMessage("Wrong credentials");
       }

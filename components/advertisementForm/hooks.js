@@ -4,12 +4,9 @@ import * as ImagePicker from "expo-image-picker";
 import DeleteButton from "../icons/DeleteButton";
 import { styles } from "./style";
 import { useGetCatsQuery, usePostAddsMutation } from "../../store";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as FileSystem from "expo-file-system";
 
 export const usePostNewAdd = () => {
-  // global.FormData = global.originalFormData;
   const [postAdd] = usePostAddsMutation();
   const [imageUris, setImageUris] = useState([]);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
@@ -114,7 +111,6 @@ export const usePostNewAdd = () => {
   };
   const handlePost = async () => {
     const formDataToSend = new FormData();
-    const token = await AsyncStorage.getItem("authToken");
     const advertisementBlob = createBlob(formData);
     const advertisementUri = await saveBlobToFile(advertisementBlob);
     formDataToSend.append("advertisement", {
@@ -123,11 +119,8 @@ export const usePostNewAdd = () => {
       type: "application/json",
     });
 
-    // formDataToSend.append("advertisement", advertisementBlob);
-
     for (const uri of imageUris) {
       const fileUri = uri.replace("file://", "");
-      // console.log(fileUri);
       const fileName = fileUri.split("/").pop();
       const fileType = fileName.endsWith(".png") ? "image/png" : "image/jpeg";
       formDataToSend.append("files", {
@@ -138,19 +131,7 @@ export const usePostNewAdd = () => {
     }
 
     try {
-      const result = await axios.post(
-        // "http://192.168.150.223:3001/api/secured/create",
-        "http://192.168.98.67:3001/api/secured/create",
-        formDataToSend,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-          transformRequest: (d) => d,
-        }
-      );
-      console.log(result);
+      const result = await postAdd(formDataToSend);
     } catch (error) {
       console.log(JSON.stringify(error.request._response));
     }
