@@ -15,6 +15,17 @@ const { width: screenWidth } = Dimensions.get("window");
 export const AddInfo = ({ advertisement }) => {
   const flatListRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  function simplifyTimestamp(timestamp) {
+    const date = new Date(timestamp);
+    const simplifiedDate = `${date.getFullYear()}.${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}.${date.getDate().toString().padStart(2, "0")}`;
+    const simplifiedTime = `${date
+      .getHours()
+      .toString()
+      .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
+    return `${simplifiedDate} ${simplifiedTime}`;
+  }
 
   const handleScrollToIndex = (index) => {
     flatListRef.current?.scrollToIndex({ animated: true, index });
@@ -57,32 +68,70 @@ export const AddInfo = ({ advertisement }) => {
           setCurrentIndex(index);
         }}
       />
-      <View style={[styles.scrollTrack, { width: screenWidth }]}>
-        {advertisement.images.map((_, dotIndex) => (
-          <View
-            key={dotIndex}
-            style={[
-              styles.dot,
-              currentIndex === dotIndex ? styles.activeDot : null,
-            ]}
+      {advertisement.images.length > 1 && (
+        <View style={[styles.scrollTrack, { width: screenWidth }]}>
+          {advertisement.images.map((_, dotIndex) => (
+            <View
+              key={dotIndex}
+              style={[
+                styles.dot,
+                currentIndex === dotIndex ? styles.activeDot : null,
+              ]}
+            />
+          ))}
+        </View>
+      )}
+      <View style={{ padding: 20, gap: 10 }}>
+        <Text style={[styles.text, { fontSize: 30, fontWeight: 600 }]}>
+          {advertisement.title}
+        </Text>
+        <Text style={[styles.text, { fontSize: 25, fontWeight: 500 }]}>
+          {advertisement.price + "$"}
+        </Text>
+        <View style={{ flexDirection: "row", gap: 10 }}>
+          <Image
+            source={require("../../assets/description-svgrepo-com.png")}
+            style={styles.icon}
           />
-        ))}
+          <Text style={[styles.text, { fontSize: 22 }]}>Decription:</Text>
+        </View>
+        <Text style={[styles.text, { fontSize: 20, fontWeight: 500 }]}>
+          {advertisement.description}
+        </Text>
+        <View style={{ flexDirection: "row", gap: 10 }}>
+          <Image
+            source={require("../../assets/category-svgrepo-com.png")}
+            style={styles.icon}
+          />
+          <Text style={[styles.text, { fontSize: 22 }]}>Categories:</Text>
+        </View>
+        <Text style={[styles.text, { fontSize: 20, fontWeight: 500 }]}>
+          {advertisement.category?.category_name}
+        </Text>
+        <View style={{ flexDirection: "row", gap: 10 }}>
+          <Image
+            source={require("../../assets/category-svgrepo-com.png")}
+            style={styles.icon}
+          />
+          <Text style={[styles.text, { fontSize: 22 }]}>Created at:</Text>
+        </View>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <View>
+            <Text style={[styles.text, { fontSize: 20, fontWeight: 500 }]}>
+              {simplifyTimestamp(advertisement.date)}
+            </Text>
+          </View>
+          <View style={{ flexDirection: "row", gap: 10 }}>
+            <Image
+              style={styles.icon}
+              source={require("../../assets/view-eye-svgrepo-com.png")}
+            />
+            <Text style={[styles.text, { fontSize: 20, fontWeight: 500 }]}>
+              {advertisement.views}
+            </Text>
+          </View>
+        </View>
       </View>
-
-      {/* Dots indicator outside the FlatList */}
-      {/* <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handlePrev}>
-          <Text style={styles.buttonText}>Previous</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleNext}>
-          <Text style={styles.buttonText}>Next</Text>
-        </TouchableOpacity>
-      </View> */}
-
-      {/* Buttons and advertisement details as before */}
-      <Text style={styles.text}>{advertisement.title}</Text>
-      <Text style={styles.text}>{advertisement.price}</Text>
-      <Text style={styles.text}>{advertisement.category?.category_name}</Text>
     </View>
   );
 };

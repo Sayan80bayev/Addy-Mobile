@@ -14,12 +14,13 @@ export const styles = StyleSheet.create({
     color: "white",
   },
   image: {
-    width: screenWidth,
+    // width: screenWidth,
     height: 300, // Set the height according to your needs
-    resizeMode: "cover", // Ensures the image covers the entire area
+    resizeMode: "contain", // Ensures the image covers the entire area
   },
   carousel: {
     width: screenWidth,
+    backgroundColor: "#434343",
     height: 300, // Same as the image height
     // overflow: "hidden",
   },
@@ -43,5 +44,9 @@ export const styles = StyleSheet.create({
     justifyContent: "center", // Center the dots horizontally
     alignItems: "center", // Center the dots vertically (optional)
     marginTop: 10, // Adjust the spacing from the carousel as needed
+  },
+  icon: {
+    height: 30,
+    width: 30,
   },
 });
