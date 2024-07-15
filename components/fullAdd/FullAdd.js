@@ -1,8 +1,10 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { useFullAdd } from "./hooks";
-
+import { AddInfo } from "./AddInfo";
+import { styles } from "./style";
+import { SafeAreaView } from "react-native-safe-area-context";
 export const FullAdd = ({ navigation }) => {
   const route = useRoute();
   const { id } = route.params;
@@ -13,10 +15,12 @@ export const FullAdd = ({ navigation }) => {
   } = useFullAdd({ id });
 
   return (
-    <View>
-      <Text>{advertisement.title}</Text>
-      <Text>{advertisement.price}</Text>
-      <Text>{advertisement.category.category_name}</Text>
-    </View>
+    <SafeAreaView style={styles.main}>
+      <ScrollView>
+        {advertisement && !isLoading && (
+          <AddInfo advertisement={advertisement} />
+        )}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
