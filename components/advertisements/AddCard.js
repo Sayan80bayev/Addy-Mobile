@@ -11,7 +11,7 @@ const AddCard = ({ advertisement, fullAddNavigate }) => {
     >
       <Image source={{ uri: base64Image }} style={{ height: 140 }} />
       <View style={styles.cardDescription}>
-        <Text style={[styles.text, styles.cardHeader]}>
+        <Text style={[styles.text, styles.cardHeader]} numberOfLines={1}>
           {advertisement.title}
         </Text>
         <Text style={styles.text}>{advertisement.price}$</Text>
