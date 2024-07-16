@@ -166,20 +166,25 @@ export const useUpdateAdd = (id) => {
   const [postAdd] = useUpdatePostMutation();
   const [imageUris, setImageUris] = useState([]);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
-  useFocusEffect(
-    React.useCallback(() => {
-      if (advertisement) {
-        setFormData(advertisement);
-        setValue(advertisement.category.category_id);
-      }
-    }, [advertisement])
-  );
+  // console.log(advertisement);
   const [formData, setFormData] = useState({
     title: "",
     price: "",
     description: "",
     category: { category_id: "", category_name: "" },
   });
+  useFocusEffect(
+    React.useCallback(() => {
+      if (advertisement) {
+        setFormData({
+          title: advertisement.title,
+          price: advertisement.price + "",
+          description: advertisement.description,
+        });
+        setValue(advertisement.category.category_id);
+      }
+    }, [advertisement])
+  );
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const { data: categories = [] } = useGetCatsQuery();

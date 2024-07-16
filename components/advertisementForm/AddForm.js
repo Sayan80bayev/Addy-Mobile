@@ -92,8 +92,8 @@ export const AddForm = () => {
               style={styles.formInput}
               keyboardType="number-pad"
               value={formData.price}
-              onChangeText={(text) =>
-                setFormData((prev) => ({ ...prev, price: text }))
+              onChangeText={(number) =>
+                setFormData((prev) => ({ ...prev, price: number }))
               }
             />
           </View>
