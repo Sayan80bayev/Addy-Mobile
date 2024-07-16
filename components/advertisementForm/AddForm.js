@@ -13,9 +13,26 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import PlusButton from "../icons/PlusButton";
 import { styles } from "./style";
 import { EmptyImage } from "./EmptyImage";
-import { usePostNewAdd } from "./hooks";
+import { usePostNewAdd, useUpdateAdd } from "./hooks";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 
 export const AddForm = () => {
+  const route = useRoute();
+  const [editData, setEditData] = useState(null);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (route.params) {
+        setEditData(route.params);
+      }
+    }, [route.params])
+  );
+
+  // Call the hooks outside the conditional
+  const updateAdd = useUpdateAdd(editData ? editData.id : null);
+  const postNewAdd = usePostNewAdd();
+
+  // Use the appropriate hook based on editData
   const {
     imageUris,
     open,
@@ -29,11 +46,13 @@ export const AddForm = () => {
     formData,
     setFormData,
     handlePost,
-  } = usePostNewAdd();
+  } = editData != null ? updateAdd : postNewAdd;
+
   const categoriesToDrop = categories.map((cat) => ({
     label: cat.category_name,
     value: cat.category_id,
   }));
+
   return (
     <GestureHandlerRootView style={{ height: "100%" }}>
       <StatusBar backgroundColor={"#232323"} barStyle={"light-content"} />
