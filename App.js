@@ -14,7 +14,13 @@ import Icon from "react-native-vector-icons/AntDesign";
 import { Keyboard, Animated, StyleSheet, View } from "react-native";
 import { Profile } from "./components/profile/Profile";
 import { FullAdd } from "./components/fullAdd/FullAdd";
-
+import { decode as atob, encode as btoa } from "base-64";
+if (typeof global.atob === "undefined") {
+  global.atob = atob;
+}
+if (typeof global.btoa === "undefined") {
+  global.btoa = btoa;
+}
 const Tab = createBottomTabNavigator();
 const AuthStack = createStackNavigator();
 const MainStack = createStackNavigator();

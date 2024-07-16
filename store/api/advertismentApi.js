@@ -9,7 +9,6 @@ export const advertisementApi = createApi({
     // baseUrl: `http://192.168.98.67:3001`,
     prepareHeaders: async (headers, { getState }) => {
       const token = await AsyncStorage.getItem("authToken");
-      console.log(token);
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
