@@ -1,15 +1,7 @@
 import React, { useRef, useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, Image, FlatList, Dimensions } from "react-native";
 import { styles } from "./style";
-
+import BellButton from "../../assets/svg_icons/BellButton";
 const { width: screenWidth } = Dimensions.get("window");
 
 export const AddInfo = ({ advertisement }) => {
@@ -82,9 +74,23 @@ export const AddInfo = ({ advertisement }) => {
         </View>
       )}
       <View style={{ padding: 20, gap: 10 }}>
-        <Text style={[styles.text, { fontSize: 30, fontWeight: 600 }]}>
-          {advertisement.title}
-        </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            // borderColor: "white",
+            // borderWidth: 1,
+          }}
+        >
+          <Text style={[styles.text, { fontSize: 30, fontWeight: 600 }]}>
+            {advertisement.title}
+          </Text>
+          <BellButton
+            style={{ height: 25, width: 25, fill: "white" }}
+            onPress={() => console.log("pressed")}
+          />
+        </View>
         <Text style={[styles.text, { fontSize: 25, fontWeight: 500 }]}>
           {advertisement.price + "$"}
         </Text>

@@ -49,4 +49,14 @@ export const styles = StyleSheet.create({
     height: 30,
     width: 30,
   },
+  contactButton: {
+    padding: 10,
+    height: 50,
+    backgroundColor: "#FF0083",
+    borderRadius: 5,
+    flexDirection: "row",
+    alignItems: "center",
+    // alignContent: "center",
+    justifyContent: "center",
+  },
 });
