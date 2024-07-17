@@ -182,6 +182,11 @@ export const useUpdateAdd = (id) => {
           description: advertisement.description,
         });
         setValue(advertisement.category.category_id);
+        setImageUris(() =>
+          advertisement.images?.map(
+            (image) => `data:image/jpeg;base64,${image.imageData}`
+          )
+        );
       }
     }, [advertisement])
   );

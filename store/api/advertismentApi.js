@@ -1,12 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// baseUrl: `http://127.0.0.1:3001`,
+import { API_KEY } from "../API_KEY";
 
 export const advertisementApi = createApi({
   reducerPath: "advertisementApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `http://192.168.150.223:3001`,
-    // baseUrl: `http://192.168.98.67:3001`,
+    baseUrl: `${API_KEY}`,
     prepareHeaders: async (headers, { getState }) => {
       const token = await AsyncStorage.getItem("authToken");
       if (token) {

@@ -1,11 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_KEY } from "../API_KEY";
 
 export const categoryApi = createApi({
   reduserPath: "categoryApi",
   baseQuery: fetchBaseQuery({
-    // baseUrl: `http://192.168.98.67:3001`,
-
-    baseUrl: `http://192.168.150.223:3001`,
+    baseUrl: `${API_KEY}`,
     // prepareHeaders: (headers) => {
     //   const token = localStorage.getItem("authToken");
     //   if (token) {
