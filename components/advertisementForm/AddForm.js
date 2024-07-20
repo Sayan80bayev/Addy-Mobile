@@ -16,7 +16,7 @@ import { EmptyImage } from "./EmptyImage";
 import { usePostNewAdd, useUpdateAdd } from "./hooks";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 
-export const AddForm = () => {
+export const AddForm = ({ navigation }) => {
   const route = useRoute();
   const [editData, setEditData] = useState(null);
 
@@ -28,8 +28,15 @@ export const AddForm = () => {
     }, [route.params])
   );
 
+  useEffect(() => {
+    console.log("edit: ", editData);
+  }, [editData]);
   // Call the hooks outside the conditional
-  const updateAdd = useUpdateAdd(editData ? editData.id : null);
+  const updateAdd = useUpdateAdd(
+    editData
+      ? { id: editData.id, navigation: navigation }
+      : { id: null, navigation: null }
+  );
   const postNewAdd = usePostNewAdd();
 
   // Use the appropriate hook based on editData
@@ -46,7 +53,7 @@ export const AddForm = () => {
     formData,
     setFormData,
     handlePost,
-  } = editData != null ? updateAdd : postNewAdd;
+  } = editData ? updateAdd : postNewAdd;
 
   const categoriesToDrop = categories.map((cat) => ({
     label: cat.category_name,
@@ -112,7 +119,7 @@ export const AddForm = () => {
               setValue={setValue}
             />
           </View>
-          {imageUris.length > 0 ? (
+          {imageUris?.length > 0 ? (
             <DraggableFlatList
               data={imageUris}
               renderItem={renderItem}

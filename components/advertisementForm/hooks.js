@@ -160,13 +160,18 @@ export const usePostNewAdd = (id) => {
     handlePost,
   };
 };
-export const useUpdateAdd = (id) => {
-  const { data: advertisement } = useGetByIdQuery(id);
+export const useUpdateAdd = (params) => {
+  const { id, navigation } = params || {};
+  const { data: advertisement } = useGetByIdQuery(id, {
+    skip: !id, // Skip the query if id is not provided
+  });
+
+  // Return early if necessary conditions are not met
+  if (!id || !navigation) return;
 
   const [postAdd] = useUpdatePostMutation();
   const [imageUris, setImageUris] = useState([]);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
-  // console.log(advertisement);
   const [formData, setFormData] = useState({
     title: "",
     price: "",
@@ -306,6 +311,7 @@ export const useUpdateAdd = (id) => {
 
     try {
       const result = await postAdd(formDataToSend);
+      navigation.navigate("FullAdd", { id });
     } catch (error) {
       console.log(JSON.stringify(error.request._response));
     }
