@@ -13,9 +13,33 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import PlusButton from "../icons/PlusButton";
 import { styles } from "./style";
 import { EmptyImage } from "./EmptyImage";
-import { usePostNewAdd } from "./hooks";
+import { usePostNewAdd, useUpdateAdd } from "./hooks";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 
-export const AddForm = () => {
+export const AddForm = ({ navigation }) => {
+  const route = useRoute();
+  const [editData, setEditData] = useState(null);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (route.params) {
+        setEditData(route.params);
+      }
+    }, [route.params])
+  );
+
+  useEffect(() => {
+    console.log("edit: ", editData);
+  }, [editData]);
+  // Call the hooks outside the conditional
+  const updateAdd = useUpdateAdd(
+    editData
+      ? { id: editData.id, navigation: navigation }
+      : { id: null, navigation: null }
+  );
+  const postNewAdd = usePostNewAdd();
+
+  // Use the appropriate hook based on editData
   const {
     imageUris,
     open,
