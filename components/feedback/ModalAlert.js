@@ -1,53 +1,34 @@
-import React, { useState } from "react";
-import {
-  Modal,
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+// ModalAlert.js
+import React from "react";
+import { Modal, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-const ModalAlert = ({ text }) => {
-  if (!text) return;
-
-  const [modalVisible, setModalVisible] = useState(true);
-
-  const showModal = () => {
-    setModalVisible(true);
-  };
+const ModalAlert = ({ text, modalVisible, setModalVisible }) => {
+  if (!text) return null; // Return null if no text is provided
 
   const hideModal = () => {
     setModalVisible(false);
   };
 
   return (
-    <View style={styles.container}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={hideModal}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>{text}</Text>
-            <TouchableOpacity style={styles.button} onPress={hideModal}>
-              <Text style={styles.buttonText}>Close</Text>
-            </TouchableOpacity>
-          </View>
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={hideModal}
+    >
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Text style={styles.modalText}>{text}</Text>
+          <TouchableOpacity style={styles.button} onPress={hideModal}>
+            <Text style={styles.buttonText}>Close</Text>
+          </TouchableOpacity>
         </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -56,7 +37,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: "#323232",
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
@@ -72,9 +53,10 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+    color: "white",
   },
   button: {
-    backgroundColor: "#2196F3",
+    backgroundColor: "#FF0083",
     borderRadius: 20,
     padding: 10,
     elevation: 2,

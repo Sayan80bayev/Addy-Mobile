@@ -231,7 +231,13 @@ export const useUpdateAdd = (params) => {
 
     try {
       const result = await postAdd({ updatedAdd: formDataToSend, id });
-      navigation.navigate("FullAdd", { id });
+      navigation.navigate("FullAdd", {
+        id,
+        message: {
+          status: "__SUCCESS__",
+          value: "Advertisement has been updated",
+        },
+      });
     } catch (error) {
       console.log(JSON.stringify(error.request._response));
     }
