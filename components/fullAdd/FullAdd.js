@@ -36,7 +36,12 @@ export const FullAdd = ({ navigation }) => {
         {advertisement && !isLoading && user && (
           <>
             <AddInfo advertisement={advertisement} />
-            <AuthorInfo user={user} token={token} />
+            <AuthorInfo
+              user={user}
+              token={token}
+              id={advertisement.id}
+              navigation={navigation}
+            />
           </>
         )}
       </ScrollView>

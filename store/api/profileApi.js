@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_KEY } from "../API_KEY";
 export const profileApi = createApi({
   reducerPath: "profileApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://192.168.150.223:3001/user",
-    // baseUrl: "http://192.168.98.67:3001/user",
+    baseUrl: `${API_KEY}/user`,
     prepareHeaders: async (headers, { getState }) => {
       const token = await AsyncStorage.getItem("authToken");
       if (token) {

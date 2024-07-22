@@ -9,7 +9,10 @@ if (typeof global.atob === "undefined") {
 if (typeof global.btoa === "undefined") {
   global.btoa = btoa;
 }
-export const AuthorInfo = ({ user, token }) => {
+export const AuthorInfo = ({ user, token, navigation, id }) => {
+  const navigateToEdit = (id) => {
+    return navigation.navigate("Edit", { isEditing: true, id: id });
+  };
   const [email, setEmail] = useState();
   useEffect(() => {
     if (token) {
@@ -67,7 +70,10 @@ export const AuthorInfo = ({ user, token }) => {
         </TouchableOpacity>
       ) : (
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <TouchableOpacity style={[styles.contactButton, { width: "45%" }]}>
+          <TouchableOpacity
+            style={[styles.contactButton, { width: "45%" }]}
+            onPress={() => navigateToEdit(id)}
+          >
             <View style={{ flexDirection: "row", gap: 5 }}>
               <Text style={[styles.text, { fontSize: 20, fontWeight: 600 }]}>
                 Edit

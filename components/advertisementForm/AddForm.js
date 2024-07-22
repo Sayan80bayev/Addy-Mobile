@@ -53,11 +53,13 @@ export const AddForm = ({ navigation }) => {
     formData,
     setFormData,
     handlePost,
-  } = usePostNewAdd();
+  } = editData ? updateAdd : postNewAdd;
+
   const categoriesToDrop = categories.map((cat) => ({
     label: cat.category_name,
     value: cat.category_id,
   }));
+
   return (
     <GestureHandlerRootView style={{ height: "100%" }}>
       <StatusBar backgroundColor={"#232323"} barStyle={"light-content"} />
@@ -97,8 +99,8 @@ export const AddForm = ({ navigation }) => {
               style={styles.formInput}
               keyboardType="number-pad"
               value={formData.price}
-              onChangeText={(text) =>
-                setFormData((prev) => ({ ...prev, price: text }))
+              onChangeText={(number) =>
+                setFormData((prev) => ({ ...prev, price: number }))
               }
             />
           </View>
@@ -117,7 +119,7 @@ export const AddForm = ({ navigation }) => {
               setValue={setValue}
             />
           </View>
-          {imageUris.length > 0 ? (
+          {imageUris?.length > 0 ? (
             <DraggableFlatList
               data={imageUris}
               renderItem={renderItem}
