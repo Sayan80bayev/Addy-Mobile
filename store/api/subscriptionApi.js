@@ -1,12 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-// baseUrl: `http://192.168.98.67:3001`,
+import { API_KEY } from "../API_KEY";
 
 export const subscriptionApi = createApi({
   reducerPath: "subscriptionApi",
-
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://192.168.150.223:3001/subs",
+    baseUrl: `${API_KEY}/subs`,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("authToken");
       if (token) {
