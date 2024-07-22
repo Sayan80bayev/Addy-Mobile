@@ -230,6 +230,11 @@ const App = () => {
             options={{ headerShown: false }}
           />
           <MainStack.Screen
+            name="Edit"
+            component={AddForm}
+            options={{ headerShown: false }}
+          />
+          <MainStack.Screen
             name="FullAdd"
             component={FullAdd}
             options={{ headerShown: false }}

@@ -11,7 +11,7 @@ if (typeof global.btoa === "undefined") {
 }
 export const AuthorInfo = ({ user, token, navigation, id }) => {
   const navigateToEdit = (id) => {
-    return navigation.navigate("New Add", { isEditing: true, id: id });
+    return navigation.navigate("Edit", { isEditing: true, id: id });
   };
   const [email, setEmail] = useState();
   useEffect(() => {
