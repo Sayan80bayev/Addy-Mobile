@@ -1,12 +1,16 @@
 // ModalAlert.js
 import React from "react";
 import { Modal, View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useDispatch } from "react-redux";
+import { removeMessage } from "../../store/messageSlice";
 
 const ModalAlert = ({ text, modalVisible, setModalVisible }) => {
   if (!text) return null; // Return null if no text is provided
+  const dispatch = useDispatch();
 
   const hideModal = () => {
     setModalVisible(false);
+    dispatch(removeMessage());
   };
 
   return (

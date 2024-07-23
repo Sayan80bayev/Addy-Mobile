@@ -11,10 +11,11 @@ import { useGetUserQuery } from "../../store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import ModalAlert from "../feedback/ModalAlert";
+import { useSelector } from "react-redux";
 
 export const FullAdd = ({ navigation }) => {
   const route = useRoute();
-  const { id, message = null } = route.params;
+  const { id } = route.params;
   const {
     advertisement = { title: "" },
     isLoading,
@@ -24,7 +25,7 @@ export const FullAdd = ({ navigation }) => {
   const { data: user, isLoading: isUserLoading } = useGetUserQuery(email);
   const [token, setToken] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-
+  const message = useSelector((state) => state.message.message);
   useFocusEffect(
     React.useCallback(() => {
       const fetchToken = async () => {
@@ -34,18 +35,19 @@ export const FullAdd = ({ navigation }) => {
       fetchToken();
     }, [])
   );
-
-  React.useEffect(() => {
-    if (message) {
-      setModalVisible(true);
-    }
-  }, [message]);
+  useFocusEffect(
+    React.useCallback(() => {
+      if (message) {
+        setModalVisible(true);
+      }
+    }, [message])
+  );
 
   return (
     <SafeAreaView style={styles.main}>
       {message && (
         <ModalAlert
-          text={message.value}
+          text={message}
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
         />

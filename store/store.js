@@ -5,6 +5,8 @@ import { categoryApi } from "./api/categoryApi";
 import { subscriptionApi } from "./api/subscriptionApi";
 import { profileApi } from "./api/profileApi";
 import { mainApi } from "./api/mainApi";
+import messageReducer from "./messageSlice"; // Import the message reducer
+
 export const store = configureStore({
   reducer: {
     [authenticationApi.reducerPath]: authenticationApi.reducer,
@@ -13,8 +15,8 @@ export const store = configureStore({
     [mainApi.reducerPath]: mainApi.reducer,
     [subscriptionApi.reducerPath]: subscriptionApi.reducer,
     [profileApi.reducerPath]: profileApi.reducer,
+    message: messageReducer, // Add the message reducer
   },
-
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       authenticationApi.middleware,
