@@ -11,6 +11,7 @@ const messageSlice = createSlice({
   reducers: {
     addMessage: (state, action) => {
       state.message = action.payload;
+      console.log("addded state");
     },
     removeMessage: (state) => {
       state.message = null;

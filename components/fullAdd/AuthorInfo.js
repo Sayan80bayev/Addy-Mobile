@@ -3,8 +3,6 @@ import { View, Image, Text, TouchableOpacity } from "react-native";
 import { styles } from "./style";
 import { jwtDecode } from "jwt-decode";
 import { decode as atob, encode as btoa } from "base-64";
-import { useDispatch } from "react-redux";
-import { addMessage } from "../../store/messageSlice";
 
 if (typeof global.atob === "undefined") {
   global.atob = atob;
@@ -13,9 +11,7 @@ if (typeof global.btoa === "undefined") {
   global.btoa = btoa;
 }
 export const AuthorInfo = ({ user, token, navigation, id }) => {
-  const dispatch = useDispatch();
   const navigateToEdit = (id) => {
-    dispatch(addMessage("Advertisment has been updated!"));
     return navigation.navigate("Edit", { id });
   };
   const [email, setEmail] = useState();

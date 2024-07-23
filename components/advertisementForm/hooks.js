@@ -11,6 +11,8 @@ import {
 } from "../../store";
 import * as FileSystem from "expo-file-system";
 import { useFocusEffect } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { addMessage } from "../../store/messageSlice";
 
 const useKeyboardListeners = (setKeyboardOpen) => {
   useEffect(() => {
@@ -111,6 +113,7 @@ const renderImageItem = ({ item, index, drag, deleteImage }) => (
 );
 
 export const usePostNewAdd = (id) => {
+  const dispatch = useDispatch();
   const [postAdd] = usePostAddsMutation();
   const [imageUris, setImageUris] = useState([]);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
@@ -173,6 +176,7 @@ export const usePostNewAdd = (id) => {
 };
 
 export const useUpdateAdd = (params) => {
+  const dispatch = useDispatch();
   const { id, navigation } = params || {};
   const { data: advertisement } = useGetByIdQuery(id, { skip: !id });
   const [postAdd] = useUpdatePostMutation();
@@ -231,12 +235,10 @@ export const useUpdateAdd = (params) => {
 
     try {
       const result = await postAdd({ updatedAdd: formDataToSend, id });
+      dispatch(addMessage("Advertisment has been updated!"));
+
       navigation.navigate("FullAdd", {
         id,
-        message: {
-          status: "__SUCCESS__",
-          value: "Advertisement has been updated",
-        },
       });
     } catch (error) {
       console.log(JSON.stringify(error.request._response));
