@@ -32,7 +32,7 @@ export const FullAdd = ({ navigation }) => {
     React.useCallback(() => {
       const fetchToken = async () => {
         const result = await AsyncStorage.getItem("authToken");
-        setToken(result);
+        setToken(result ?? null);
       };
       fetchToken();
     }, [])

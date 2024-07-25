@@ -13,7 +13,7 @@ import * as FileSystem from "expo-file-system";
 import { useFocusEffect } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { addMessage } from "../../store/messageSlice";
-
+import { useNavigation } from "@react-navigation/native";
 const useKeyboardListeners = (setKeyboardOpen) => {
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -112,7 +112,7 @@ const renderImageItem = ({ item, index, drag, deleteImage }) => (
   </TouchableOpacity>
 );
 
-export const usePostNewAdd = (id) => {
+export const usePostNewAdd = () => {
   const dispatch = useDispatch();
   const [postAdd] = usePostAddsMutation();
   const [imageUris, setImageUris] = useState([]);
@@ -126,7 +126,7 @@ export const usePostNewAdd = (id) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const { data: categories = [] } = useGetCatsQuery();
-
+  const navigator = useNavigation();
   useKeyboardListeners(setKeyboardOpen);
   useCategoryEffect(value, setFormData);
 
@@ -152,6 +152,15 @@ export const usePostNewAdd = (id) => {
 
     try {
       const result = await postAdd(formDataToSend);
+      dispatch(addMessage("Successfully posted!"));
+      navigator.navigate("Ads");
+      setImageUris([]);
+      setFormData({
+        title: "",
+        price: "",
+        description: "",
+        category: { category_id: "", category_name: "" },
+      });
     } catch (error) {
       console.log(JSON.stringify(error.request._response));
     }
@@ -236,7 +245,6 @@ export const useUpdateAdd = (params) => {
     try {
       const result = await postAdd({ updatedAdd: formDataToSend, id });
       dispatch(addMessage("Advertisment has been updated!"));
-
       navigation.navigate("FullAdd", {
         id,
       });

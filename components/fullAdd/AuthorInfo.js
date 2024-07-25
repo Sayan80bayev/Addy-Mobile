@@ -3,7 +3,9 @@ import { View, Image, Text, TouchableOpacity } from "react-native";
 import { styles } from "./style";
 import { jwtDecode } from "jwt-decode";
 import { decode as atob, encode as btoa } from "base-64";
-
+import { useDeletePostMutation } from "../../store";
+import { useDispatch } from "react-redux";
+import { addMessage } from "../../store/messageSlice";
 if (typeof global.atob === "undefined") {
   global.atob = atob;
 }
@@ -11,12 +13,21 @@ if (typeof global.btoa === "undefined") {
   global.btoa = btoa;
 }
 export const AuthorInfo = ({ user, token, navigation, id }) => {
+  const dispatch = useDispatch();
   const navigateToEdit = (id) => {
     return navigation.navigate("Edit", { id });
   };
-
+  const [deleteAdd] = useDeletePostMutation();
   const email = token && jwtDecode(token).sub;
-
+  const handleDelete = () => {
+    try {
+      deleteAdd(id);
+      navigation.navigate("Ads");
+      dispatch(addMessage("Successfully deleted"));
+    } catch (error) {
+      dispatch(addMessage("Error"));
+    }
+  };
   return (
     <View style={{ padding: 20, gap: 20 }}>
       <View
@@ -52,7 +63,7 @@ export const AuthorInfo = ({ user, token, navigation, id }) => {
           />
         </View>
       </View>
-      {email != user.email && token ? (
+      {email != user.email ? (
         <TouchableOpacity style={styles.contactButton}>
           <View style={{ flexDirection: "row" }}>
             <Text style={[styles.text, { fontSize: 20, fontWeight: 600 }]}>
@@ -80,7 +91,10 @@ export const AuthorInfo = ({ user, token, navigation, id }) => {
               />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.contactButton, { width: "45%" }]}>
+          <TouchableOpacity
+            style={[styles.contactButton, { width: "45%" }]}
+            onPress={handleDelete}
+          >
             <View style={{ flexDirection: "row" }}>
               <Text style={[styles.text, { fontSize: 20, fontWeight: 600 }]}>
                 Delete

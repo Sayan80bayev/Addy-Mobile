@@ -4,7 +4,8 @@ import { jwtDecode } from "jwt-decode";
 import { decode as atob, encode as btoa } from "base-64";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
-
+import { useDispatch } from "react-redux";
+import { addMessage } from "../../store/messageSlice";
 // Polyfill for atob and btoa
 if (typeof global.atob === "undefined") {
   global.atob = atob;
@@ -14,6 +15,7 @@ if (typeof global.btoa === "undefined") {
 }
 
 export const useProfile = () => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState(null);
   const [token, setToken] = useState(null);
 
@@ -54,6 +56,7 @@ export const useProfile = () => {
     await AsyncStorage.removeItem("authToken");
     setToken(null);
     setEmail(null);
+    dispatch(addMessage("Successfully logged out!"));
   };
 
   return {
