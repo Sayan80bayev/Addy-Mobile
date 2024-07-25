@@ -67,7 +67,7 @@ export const MainTabs = ({ tabBarMargin }) => (
         headerTintColor: "white",
       }}
     />
-    <Tab.Screen
+    {/* <Tab.Screen
       name="Search"
       component={AddForm}
       options={{
@@ -80,7 +80,7 @@ export const MainTabs = ({ tabBarMargin }) => (
         headerShadowVisible: false,
         headerTintColor: "white",
       }}
-    />
+    /> */}
     <Tab.Screen
       name="Profile"
       component={Profile}
