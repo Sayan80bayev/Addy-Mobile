@@ -38,7 +38,7 @@ export const useProfile = () => {
   }, [token]);
 
   const { data, refetch } = useGetUserQuery(email);
-  const [user, setUser] = useState();
+  const user = data ?? null;
 
   useEffect(() => {
     if (email) {
@@ -46,15 +46,14 @@ export const useProfile = () => {
     }
   }, [email]);
 
-  useEffect(() => {
-    setUser(data);
-  }, [data]);
+  // useEffect(() => {
+  //   setUser(data);
+  // }, [data]);
 
   const logout = async () => {
     await AsyncStorage.removeItem("authToken");
     setToken(null);
     setEmail(null);
-    setUser(null);
   };
 
   return {

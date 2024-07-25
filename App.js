@@ -13,6 +13,9 @@ import { Keyboard, Animated, Easing } from "react-native";
 import { FullAdd } from "./components/fullAdd/FullAdd";
 import { decode as atob, encode as btoa } from "base-64";
 import ModalAlert from "./components/feedback/ModalAlert";
+import * as NavigationBar from "expo-navigation-bar";
+
+NavigationBar.setBackgroundColorAsync("#232323");
 
 if (typeof global.atob === "undefined") {
   global.atob = atob;
@@ -20,7 +23,6 @@ if (typeof global.atob === "undefined") {
 if (typeof global.btoa === "undefined") {
   global.btoa = btoa;
 }
-
 const MainStack = createStackNavigator();
 const MyTheme = {
   dark: true,
@@ -167,10 +169,12 @@ const RootComponent = () => {
   );
 };
 
-const App = () => (
-  <Provider store={store}>
-    <RootComponent />
-  </Provider>
-);
+const App = () => {
+  return (
+    <Provider store={store}>
+      <RootComponent />
+    </Provider>
+  );
+};
 
 export default App;
