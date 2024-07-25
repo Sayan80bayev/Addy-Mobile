@@ -1,6 +1,5 @@
-// FullAdd.js
 import React, { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, RefreshControl } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { useFullAdd } from "./hooks";
 import { AddInfo } from "./AddInfo";
@@ -18,10 +17,17 @@ export const FullAdd = ({ navigation }) => {
     advertisement = { title: "" },
     isLoading,
     error,
+    refetch,
   } = useFullAdd({ id });
   const email = advertisement?.email;
-  const { data: user, isLoading: isUserLoading } = useGetUserQuery(email);
+  const {
+    data: user,
+    isLoading: isUserLoading,
+    refetch: refethcUser,
+  } = useGetUserQuery(email);
   const [token, setToken] = useState();
+  const [refreshing, setRefreshing] = useState(false);
+
   useFocusEffect(
     React.useCallback(() => {
       const fetchToken = async () => {
@@ -32,10 +38,20 @@ export const FullAdd = ({ navigation }) => {
     }, [])
   );
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    refetch().finally(() => setRefreshing(false));
+  }, []);
+
   return (
     <SafeAreaView style={styles.main}>
-      <ScrollView style={{ flex: 1 }}>
-        {advertisement && !isLoading && user && (
+      <ScrollView
+        style={{ flex: 1 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        {advertisement && !isLoading && user && !isUserLoading && (
           <>
             <AddInfo advertisement={advertisement} />
             <AuthorInfo

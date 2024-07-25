@@ -14,13 +14,8 @@ export const AuthorInfo = ({ user, token, navigation, id }) => {
   const navigateToEdit = (id) => {
     return navigation.navigate("Edit", { id });
   };
-  const [email, setEmail] = useState();
-  useEffect(() => {
-    if (token) {
-      const result = jwtDecode(token).sub;
-      setEmail(result);
-    }
-  }, [token]);
+
+  const email = token && jwtDecode(token).sub;
 
   return (
     <View style={{ padding: 20, gap: 20 }}>
@@ -57,7 +52,7 @@ export const AuthorInfo = ({ user, token, navigation, id }) => {
           />
         </View>
       </View>
-      {email != user.email ? (
+      {email != user.email && token ? (
         <TouchableOpacity style={styles.contactButton}>
           <View style={{ flexDirection: "row" }}>
             <Text style={[styles.text, { fontSize: 20, fontWeight: 600 }]}>
