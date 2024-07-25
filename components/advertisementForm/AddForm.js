@@ -10,7 +10,7 @@ import {
 import DropDownPicker from "react-native-dropdown-picker";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import PlusButton from "../icons/PlusButton";
+import PlusButton from "../icons/ClipButton";
 import { styles } from "./style";
 import { EmptyImage } from "./EmptyImage";
 import { usePostNewAdd, useUpdateAdd } from "./hooks";

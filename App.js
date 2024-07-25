@@ -9,12 +9,15 @@ import { store } from "./store";
 import LoginScreen from "./components/auth/LoginScreen";
 import RegistrationScreen from "./components/auth/RegistrationScreen";
 import { AddForm } from "./components/advertisementForm/AddForm";
-import { Keyboard, Animated, Easing } from "react-native";
+import { Keyboard, Animated, Easing, View } from "react-native";
 import { FullAdd } from "./components/fullAdd/FullAdd";
 import { decode as atob, encode as btoa } from "base-64";
 import ModalAlert from "./components/feedback/ModalAlert";
 import * as NavigationBar from "expo-navigation-bar";
+import * as SystemUI from "expo-system-ui";
 
+// Get the height of the screen
+SystemUI.setBackgroundColorAsync("#232323");
 NavigationBar.setBackgroundColorAsync("#232323");
 
 if (typeof global.atob === "undefined") {
@@ -30,6 +33,8 @@ const MyTheme = {
     ...DefaultTheme.colors,
     primary: "#232323",
     background: "#232323",
+    card: "#232323",
+    border: "#232323",
   },
 };
 
@@ -123,9 +128,9 @@ const RootComponent = () => {
                 },
               },
               close: {
-                animation: "timing",
+                animation: "spring",
                 config: {
-                  duration: 500,
+                  duration: 200,
                   easing: Easing.linear,
                 },
               },

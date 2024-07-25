@@ -1,11 +1,12 @@
 // PlusButton.js
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import Icon from "react-native-vector-icons/AntDesign";
 
 const PlusButton = ({ onPress }) => {
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.plus}>+</Text>
+      <Icon name="paperclip" color={"white"} size={25} />
     </TouchableOpacity>
   );
 };
