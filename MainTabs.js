@@ -4,7 +4,7 @@ import { ColorfulTabBar } from "react-navigation-tabbar-collection";
 import { Profile } from "./components/profile/Profile";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AddForm } from "./components/advertisementForm/AddForm";
-import { Keyboard, Animated, StyleSheet, View, Easing } from "react-native";
+import { Animated, StyleSheet } from "react-native";
 
 const Tab = createBottomTabNavigator();
 const colorPalete = {

@@ -1,12 +1,10 @@
-import React, { useRef, useState } from "react";
-import { View, Text, Image, FlatList, Dimensions } from "react-native";
+import React from "react";
+import { View, Text, Image } from "react-native";
 import { styles } from "./style";
 import BellButton from "../../assets/svg_icons/BellButton";
-const { width: screenWidth } = Dimensions.get("window");
+import ImageCarousel from "../common/ImageCarousel";
 
 export const AddInfo = ({ advertisement }) => {
-  const flatListRef = useRef(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
   function simplifyTimestamp(timestamp) {
     const date = new Date(timestamp);
     const simplifiedDate = `${date.getFullYear()}.${(date.getMonth() + 1)
@@ -19,68 +17,15 @@ export const AddInfo = ({ advertisement }) => {
     return `${simplifiedDate} ${simplifiedTime}`;
   }
 
-  const handleScrollToIndex = (index) => {
-    flatListRef.current?.scrollToIndex({ animated: true, index });
-    setCurrentIndex(index);
-  };
-
-  const handleNext = () => {
-    const nextIndex = (currentIndex + 1) % advertisement.images.length;
-    handleScrollToIndex(nextIndex);
-  };
-
-  const handlePrev = () => {
-    const prevIndex =
-      (currentIndex - 1 + advertisement.images.length) %
-      advertisement.images.length;
-    handleScrollToIndex(prevIndex);
-  };
-
   return (
     <View style={styles.container}>
-      <FlatList // Carousel FlatList
-        ref={flatListRef}
-        data={advertisement.images}
-        renderItem={({ item }) => (
-          <View style={styles.carousel}>
-            <Image
-              source={{ uri: `data:image/jpeg;base64,${item.imageData}` }}
-              style={styles.image}
-            />
-          </View> // Removed the dots from here
-        )}
-        keyExtractor={(item, index) => index.toString()}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        snapToAlignment="center"
-        decelerationRate="fast"
-        onMomentumScrollEnd={(e) => {
-          const index = Math.round(e.nativeEvent.contentOffset.x / screenWidth);
-          setCurrentIndex(index);
-        }}
-      />
-      {advertisement.images.length > 1 && (
-        <View style={[styles.scrollTrack, { width: screenWidth }]}>
-          {advertisement.images.map((_, dotIndex) => (
-            <View
-              key={dotIndex}
-              style={[
-                styles.dot,
-                currentIndex === dotIndex ? styles.activeDot : null,
-              ]}
-            />
-          ))}
-        </View>
-      )}
+      <ImageCarousel images={advertisement.images} styles={styles} />
       <View style={{ padding: 20, gap: 10 }}>
         <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            // borderColor: "white",
-            // borderWidth: 1,
           }}
         >
           <Text style={[styles.text, { fontSize: 30, fontWeight: 600 }]}>
@@ -99,7 +44,7 @@ export const AddInfo = ({ advertisement }) => {
             source={require("../../assets/description-svgrepo-com.png")}
             style={styles.icon}
           />
-          <Text style={[styles.text, { fontSize: 22 }]}>Decription:</Text>
+          <Text style={[styles.text, { fontSize: 22 }]}>Description:</Text>
         </View>
         <Text style={[styles.text, { fontSize: 20, fontWeight: 500 }]}>
           {advertisement.description}

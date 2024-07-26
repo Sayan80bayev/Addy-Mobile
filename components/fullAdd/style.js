@@ -30,20 +30,24 @@ export const styles = StyleSheet.create({
     marginVertical: 10,
   },
   dot: {
-    width: dotSize,
-    height: dotSize,
-    borderRadius: dotSize / 2, // Make it a perfect circle
+    flex: 1,
+    height: 3,
+    // borderRadius: dotSize / 2, // Make it a perfect circle
     backgroundColor: "rgba(255, 255, 255, 0.5)", // Semi-transparent white
-    marginHorizontal: dotMargin,
+    // marginHorizontal: dotMargin,
   },
   activeDot: {
     backgroundColor: "white",
   },
   scrollTrack: {
+    // borderColor: "#ff0083",
+    // borderWidth: 1,
+    gap: 1,
+    width: "100%",
     flexDirection: "row",
     justifyContent: "center", // Center the dots horizontally
     alignItems: "center", // Center the dots vertically (optional)
-    marginTop: 10, // Adjust the spacing from the carousel as needed
+    // marginTop: 10, // Adjust the spacing from the carousel as needed
   },
   icon: {
     height: 30,
