@@ -2,11 +2,14 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   card: {
     // backgroundColor: "#232323",
-    width: "48%",
+    // width: "48%",
+    // height: "50%",
+    // padding: 5,
     borderColor: "#FF0083",
     borderRadius: 10,
     borderWidth: 2,
     overflow: "hidden",
+    flex: 1,
   },
   cardDescription: {
     padding: 5,

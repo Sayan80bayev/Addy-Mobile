@@ -1,16 +1,21 @@
-import React from "react";
-import { FlatList } from "react-native";
+import React, { useState } from "react";
+import { FlatList, View, StatusBar, Text } from "react-native";
 import AddCard from "./AddCard";
 import { useGetAddsQuery } from "../../store";
-import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar } from "react-native";
 import { styles } from "./style";
 
 export const AddList = ({ navigation }) => {
   const { data: advertisements, refetch, isFetching } = useGetAddsQuery();
+  const [layout, setLayout] = useState({ width: 0, height: 0 });
+
   const fullAddNavigate = (id) => {
     return navigation.navigate("FullAdd", { id });
+  };
+
+  const handleLayout = (event) => {
+    const { width, height } = event.nativeEvent.layout;
+    setLayout({ width, height });
   };
   return (
     <>
@@ -21,13 +26,18 @@ export const AddList = ({ navigation }) => {
           style={styles.cardContainer}
           keyExtractor={(item) => item.id.toString()} // Add a key extractor if there's an id
           renderItem={({ item }) => (
-            <AddCard advertisement={item} fullAddNavigate={fullAddNavigate} />
+            <AddCard
+              advertisement={item}
+              fullAddNavigate={fullAddNavigate}
+              layout={layout}
+            />
           )}
           ItemSeparatorComponent={<View style={{ height: 20 }}></View>}
           refreshing={isFetching}
           onRefresh={refetch}
           numColumns={2}
-          columnWrapperStyle={{ justifyContent: "space-between" }} // Space items between columns
+          columnWrapperStyle={{ gap: 10 }} // Space items between columns
+          onLayout={handleLayout}
         />
       </SafeAreaView>
     </>
