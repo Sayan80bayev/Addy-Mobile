@@ -5,7 +5,7 @@ import { Profile } from "./components/profile/Profile";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AddForm } from "./components/advertisementForm/AddForm";
 import { Animated, StyleSheet } from "react-native";
-
+import AdvertisementHeader from "./components/advertisements/AdvertisementHeader";
 const Tab = createBottomTabNavigator();
 const colorPalete = {
   primary: "#ff0083",
@@ -45,14 +45,11 @@ export const MainTabs = ({ tabBarMargin }) => (
         tabBarIcon: ({ focused, color, size }) => (
           <Icon name="home" size={size} color={color} />
         ),
-        headerStyle: {
-          backgroundColor: "#232323",
-          shadowColor: "#000000",
-        },
-        headerTintColor: "white",
+        header: () => <AdvertisementHeader title="Ads" />,
         tabBarActiveBackgroundColor: "#232323",
       }}
     />
+
     <Tab.Screen
       name="New Add"
       component={AddForm}

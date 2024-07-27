@@ -1,17 +1,22 @@
 import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   card: {
-    // backgroundColor: "#232323",
+    // backgroundColor: "#323232",
     // width: "48%",
     // height: "50%",
     // padding: 5,
-    borderColor: "#FF0083",
-    borderRadius: 10,
-    borderWidth: 2,
+    // borderColor: "#FF0083",
+    // borderRadius: 10,
+    // borderWidth: 2,
     overflow: "hidden",
     flex: 1,
   },
   cardDescription: {
+    flex: 1,
+    // borderColor: "#ff0083",
+    display: "flex",
+    // borderWidth: 2,
+    justifyContent: "space-around",
     padding: 5,
   },
   cardContainer: {

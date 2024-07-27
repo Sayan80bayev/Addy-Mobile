@@ -1,11 +1,20 @@
 import React, { useState } from "react";
-import { FlatList, View, StatusBar, Text } from "react-native";
+import {
+  FlatList,
+  View,
+  StatusBar,
+  KeyboardAvoidingView,
+  Platform,
+  Dimensions,
+} from "react-native";
 import AddCard from "./AddCard";
 import { useGetAddsQuery } from "../../store";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "./style";
 
 export const AddList = ({ navigation }) => {
+  const window = Dimensions.get("window");
+  // console.log(window);
   const { data: advertisements, refetch, isFetching } = useGetAddsQuery();
   const [layout, setLayout] = useState({ width: 0, height: 0 });
 
@@ -17,6 +26,7 @@ export const AddList = ({ navigation }) => {
     const { width, height } = event.nativeEvent.layout;
     setLayout({ width, height });
   };
+
   return (
     <>
       <StatusBar backgroundColor="#232323" barStyle="light-content" />
