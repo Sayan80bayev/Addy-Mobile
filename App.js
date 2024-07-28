@@ -1,20 +1,18 @@
-import "react-native-gesture-handler";
 import React, { useEffect, useState, useRef } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { DefaultTheme } from "@react-navigation/native";
-import { MainTabs } from "./MainTabs";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Provider, useSelector } from "react-redux";
+import { Provider, useSelector, useDispatch } from "react-redux";
+import { Keyboard, Animated, Easing } from "react-native";
 import { store } from "./store";
 import LoginScreen from "./components/auth/LoginScreen";
 import RegistrationScreen from "./components/auth/RegistrationScreen";
 import { AddForm } from "./components/advertisementForm/AddForm";
-import { Keyboard, Animated, Easing, View } from "react-native";
 import { FullAdd } from "./components/fullAdd/FullAdd";
-import { decode as atob, encode as btoa } from "base-64";
 import ModalAlert from "./components/feedback/ModalAlert";
+import { MainTabs } from "./MainTabs";
 import * as NavigationBar from "expo-navigation-bar";
 import * as SystemUI from "expo-system-ui";
+import { decode as atob, encode as btoa } from "base-64";
 
 // Get the height of the screen
 SystemUI.setBackgroundColorAsync("#232323");
@@ -26,6 +24,7 @@ if (typeof global.atob === "undefined") {
 if (typeof global.btoa === "undefined") {
   global.btoa = btoa;
 }
+
 const MainStack = createStackNavigator();
 const MyTheme = {
   dark: true,
@@ -39,12 +38,12 @@ const MyTheme = {
 };
 
 const RootComponent = () => {
+  const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const message = useSelector((state) => state.message.message);
   const tabBarMargin = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    console.log("useffeect");
     if (message) {
       setModalVisible(true);
     }
@@ -55,7 +54,7 @@ const RootComponent = () => {
       "keyboardDidShow",
       () => {
         Animated.timing(tabBarMargin, {
-          toValue: -60,
+          toValue: -75,
           duration: 300,
           useNativeDriver: false,
         }).start();
@@ -76,7 +75,7 @@ const RootComponent = () => {
       keyboardDidHideListener.remove();
       keyboardDidShowListener.remove();
     };
-  }, []);
+  }, [dispatch, tabBarMargin]);
 
   const forSlide = ({ current, next, inverted, layouts: { screen } }) => {
     const translateX = Animated.add(
