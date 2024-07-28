@@ -24,6 +24,7 @@ export const MainTabs = ({ tabBarMargin }) => (
         style={[
           styles.tabBarContainer,
           {
+            paddingTop: 20,
             backgroundColor: "#232323",
             marginBottom: tabBarMargin,
           },

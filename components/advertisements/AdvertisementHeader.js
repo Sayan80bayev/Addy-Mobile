@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import Icon from "react-native-vector-icons/AntDesign";
 import { useNavigation } from "@react-navigation/native";
 
 const AdvertisementHeader = ({ title }) => {
@@ -8,22 +15,47 @@ const AdvertisementHeader = ({ title }) => {
   return (
     <View style={styles.headerContainer}>
       <Text style={styles.headerTitle}>{title}</Text>
-      <TextInput style={{ height: 40, backgroundColor: "#323232" }} />
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
+        <TextInput
+          style={{
+            height: 40,
+            backgroundColor: "#323232",
+            flex: 1,
+            borderColor: "#FF0083",
+            borderWidth: 1,
+            borderRadius: 20,
+            paddingHorizontal: 20,
+            color: "white",
+          }}
+        />
+        <TouchableOpacity style={styles.searchButton}>
+          <Icon name="search1" size={30} color={"white"} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   headerContainer: {
-    paddingLeft: 20,
+    gap: 10,
+    paddingHorizontal: 20,
     backgroundColor: "#232323",
     shadowColor: "#000000",
-    height: 60,
-    justifyContent: "center",
+    // height: 60,
+    justifyContent: "space-around",
+    marginBottom: 20,
   },
   headerTitle: {
     color: "white",
     fontSize: 18,
+  },
+  searchButton: {
+    backgroundColor: "#ff0083",
+    width: "20%",
+    alignItems: "center",
+    padding: 5,
+    borderRadius: 20,
   },
 });
 

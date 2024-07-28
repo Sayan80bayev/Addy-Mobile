@@ -54,7 +54,7 @@ const RootComponent = () => {
       "keyboardDidShow",
       () => {
         Animated.timing(tabBarMargin, {
-          toValue: -60,
+          toValue: -75,
           duration: 300,
           useNativeDriver: false,
         }).start();
