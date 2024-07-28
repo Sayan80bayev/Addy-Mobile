@@ -10,7 +10,6 @@ const AddCard = ({ advertisement, fullAddNavigate, layout }) => {
   useEffect(() => {
     setListHeight(height);
   }, []);
-  console.log(advertisement);
   return (
     <Pressable
       style={[styles.card, { height: listHeight / 2 - 20 }]}
