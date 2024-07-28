@@ -1,16 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Keyboard,
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import { useNavigation } from "@react-navigation/native";
 
 const AdvertisementHeader = ({ title }) => {
+  const [searchQuery, setSearchQuery] = useState("");
   const navigation = useNavigation();
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      Keyboard.dismiss();
+      navigation.navigate("Ads", { search: { name: searchQuery.trim() } });
+    }
+  };
 
   return (
     <View style={styles.headerContainer}>
@@ -27,8 +36,12 @@ const AdvertisementHeader = ({ title }) => {
             paddingHorizontal: 20,
             color: "white",
           }}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          placeholder="Search..."
+          placeholderTextColor="#888"
         />
-        <TouchableOpacity style={styles.searchButton}>
+        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
           <Icon name="search1" size={30} color={"white"} />
         </TouchableOpacity>
       </View>
@@ -42,7 +55,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: "#232323",
     shadowColor: "#000000",
-    // height: 60,
     justifyContent: "space-around",
     marginBottom: 20,
   },

@@ -6,11 +6,11 @@ import { simplifyTimestamp } from "../common/utils";
 const AddCard = ({ advertisement, fullAddNavigate, layout }) => {
   const { width, height } = layout;
   const [listHeight, setListHeight] = useState(height);
-  // const { width, height } = { height: 700, width: 400 };
   const base64Image = `data:image/jpeg;base64,${advertisement.images[0].imageData}`;
   useEffect(() => {
     setListHeight(height);
   }, []);
+  console.log(advertisement);
   return (
     <Pressable
       style={[styles.card, { height: listHeight / 2 - 20 }]}
