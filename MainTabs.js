@@ -58,8 +58,12 @@ export const MainTabs = ({ tabBarMargin }) => {
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
-            e.preventDefault();
-            navigation.navigate("Ads", { refresh: true });
+            const state = navigation.getState();
+            const currentRoute = state.routes[state.index];
+            if (currentRoute.name === "Ads") {
+              e.preventDefault();
+              navigation.navigate("Ads", { refresh: true });
+            }
           },
         })}
       />

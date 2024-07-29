@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { FlatList, View, StatusBar } from "react-native";
+import { FlatList, View, StatusBar, BackHandler } from "react-native";
 import AddCard from "./AddCard";
 import {
   useGetAddsQuery,
@@ -8,13 +8,17 @@ import {
 } from "../../store";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "./style";
-import { useRoute, useNavigation } from "@react-navigation/native";
+import {
+  useRoute,
+  useIsFocused,
+  useFocusEffect,
+  StackActions,
+} from "@react-navigation/native";
 
 export const AddList = ({ navigation }) => {
   const route = useRoute();
   const { search, category, refresh } = route.params || {};
 
-  // Fetch data based on route params
   const {
     data: addsData,
     refetch: refetchAdds,
@@ -55,12 +59,42 @@ export const AddList = ({ navigation }) => {
     setLayout({ width, height });
   }, []);
 
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    const onBackPress = () => {
+      if (search || category) {
+        navigation.navigate("Ads", { search: null, category: null });
+
+        return true;
+      }
+      return false;
+    };
+
+    if (isFocused) {
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+    } else {
+      BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    }
+
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    };
+  }, [isFocused, search, category, navigation]);
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch])
+  );
+
   useEffect(() => {
     if (refresh) {
       refetchAdds();
+      console.log("refetch");
       navigation.setParams({ refresh: false }); // Reset refresh param
     }
-  }, [refresh, refetch, navigation]);
+  }, [refresh, refetchAdds, navigation]);
 
   return (
     <>
