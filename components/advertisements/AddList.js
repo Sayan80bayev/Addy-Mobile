@@ -8,12 +8,7 @@ import {
 } from "../../store";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "./style";
-import {
-  useRoute,
-  useIsFocused,
-  useFocusEffect,
-  StackActions,
-} from "@react-navigation/native";
+import { useRoute, useIsFocused } from "@react-navigation/native";
 
 export const AddList = ({ navigation }) => {
   const route = useRoute();
@@ -81,12 +76,6 @@ export const AddList = ({ navigation }) => {
       BackHandler.removeEventListener("hardwareBackPress", onBackPress);
     };
   }, [isFocused, search, category, navigation]);
-
-  useFocusEffect(
-    useCallback(() => {
-      refetch();
-    }, [refetch])
-  );
 
   useEffect(() => {
     if (refresh) {
