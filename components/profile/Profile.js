@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import { FlatList, View, Text } from "react-native";
 import { useProfile } from "./hooks";
 import { UserInfo } from "./UserInfo";
 import { styles } from "./styles";
@@ -10,18 +10,33 @@ import { UserAddList } from "./UserAddList";
 export const Profile = ({ navigation }) => {
   const { user, logout } = useProfile();
 
-  return (
-    <ScrollView style={styles.main}>
+  const renderHeader = () => (
+    <>
       {user ? (
         <>
           <UserInfo user={user} logout={logout} />
           <UserActions />
-          <UserAddList email={user.email} navigation={navigation} />
         </>
       ) : (
         <UserInfoEmpty navigateToLogin={() => navigation.navigate("Login")} />
       )}
-    </ScrollView>
+    </>
+  );
+
+  return (
+    <FlatList
+      style={styles.main}
+      data={user ? [user] : []} // Dummy data to trigger FlatList rendering
+      renderItem={null}
+      ListHeaderComponent={renderHeader}
+      ListFooterComponent={
+        user ? <UserAddList email={user.email} navigation={navigation} /> : null
+      }
+      keyExtractor={(item, index) => index.toString()}
+      // columnWrapperStyle={{
+      //   gap: "2%",
+      // }}
+    />
   );
 };
 

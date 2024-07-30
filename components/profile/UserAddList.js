@@ -3,7 +3,6 @@ import { View, Text } from "react-native";
 import AddCard from "../advertisements/AddCard";
 import { useGetUserAddsQuery } from "../../store";
 import { styles } from "../advertisements/style";
-import { useNavigation } from "@react-navigation/native";
 
 export const UserAddList = ({ email, navigation }) => {
   const [layout, setLayout] = useState({ width: 0, height: 0 });
@@ -18,7 +17,7 @@ export const UserAddList = ({ email, navigation }) => {
 
   const handleLayout = useCallback((event) => {
     const { width, height } = event.nativeEvent.layout;
-    setLayout({ width, height });
+    setLayout({ width: width, height });
   }, []);
 
   useEffect(() => {
@@ -33,8 +32,7 @@ export const UserAddList = ({ email, navigation }) => {
           flexDirection: "row",
           flexWrap: "wrap",
           padding: 0,
-
-          gap: 1,
+          gap: 7,
         },
       ]}
     >
@@ -45,14 +43,15 @@ export const UserAddList = ({ email, navigation }) => {
             style={{
               width: "49%",
               marginBottom: 20,
-              borderColor: "#ff0083",
-              borderWidth: 2,
+              // borderColor: "#ff0083",
+              // borderWidth: 2,
             }}
           >
             <AddCard
               advertisement={item}
               fullAddNavigate={fullAddNavigate}
               layout={layout}
+              styles={styles}
             />
           </View>
         ))}

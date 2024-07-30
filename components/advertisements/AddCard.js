@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, Pressable } from "react-native";
-import { styles } from "./style";
 import { simplifyTimestamp } from "../common/utils";
 
-const AddCard = ({ advertisement, fullAddNavigate, layout }) => {
+const AddCard = ({ advertisement, fullAddNavigate, layout, styles }) => {
   const { width, height } = layout;
   const [listHeight, setListHeight] = useState(height);
   const base64Image = `data:image/jpeg;base64,${advertisement.images[0].imageData}`;
@@ -19,7 +18,7 @@ const AddCard = ({ advertisement, fullAddNavigate, layout }) => {
         source={{ uri: base64Image }}
         style={{
           height: width / 2 - 20,
-          width: width / 2 - 25,
+          width: "100%",
           borderRadius: 20,
         }}
       />
