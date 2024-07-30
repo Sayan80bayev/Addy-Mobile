@@ -32,7 +32,7 @@ export const UserAddList = ({ email, navigation }) => {
           flexDirection: "row",
           flexWrap: "wrap",
           padding: 0,
-          gap: 7,
+          justifyContent: "space-between",
         },
       ]}
     >
