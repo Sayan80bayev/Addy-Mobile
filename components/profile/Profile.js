@@ -4,6 +4,7 @@ import { useProfile } from "./hooks";
 import { UserInfo } from "./UserInfo";
 import { styles } from "./styles";
 import { UserInfoEmpty } from "./UserInfoEmpy";
+import { UserActions } from "./UserActions";
 export const Profile = ({ navigation }) => {
   const navigateToLogin = () => {
     return navigation.navigate("Login");
@@ -14,13 +15,8 @@ export const Profile = ({ navigation }) => {
     <View style={styles.main}>
       {user ? (
         <>
-          <UserInfo user={user} />
-          <View style={{ flex: 1 }}></View>
-          <TouchableOpacity style={styles.logout} onPress={logout}>
-            <Text style={[styles.text, { fontSize: 16, fontWeight: 500 }]}>
-              Log out
-            </Text>
-          </TouchableOpacity>
+          <UserInfo user={user} logout={logout} />
+          <UserActions />
         </>
       ) : (
         <UserInfoEmpty navigateToLogin={navigateToLogin} />
