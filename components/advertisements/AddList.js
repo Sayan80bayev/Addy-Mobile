@@ -98,6 +98,7 @@ export const AddList = ({ navigation }) => {
               advertisement={item}
               fullAddNavigate={fullAddNavigate}
               layout={layout}
+              styles={styles}
             />
           )}
           ItemSeparatorComponent={<View style={{ height: 20 }}></View>}

@@ -5,3 +5,4 @@ export * from "./api/categoryApi";
 export * from "./api/mainApi";
 export * from "./api/subscriptionApi";
 export * from "./api/profileApi";
+export * from "./api/userApi";

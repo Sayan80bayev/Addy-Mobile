@@ -1,30 +1,46 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { FlatList, View, Text } from "react-native";
 import { useProfile } from "./hooks";
 import { UserInfo } from "./UserInfo";
 import { styles } from "./styles";
 import { UserInfoEmpty } from "./UserInfoEmpy";
+import { UserActions } from "./UserActions";
+import { UserAddList } from "./UserAddList";
+import Icon from "react-native-vector-icons/AntDesign";
 export const Profile = ({ navigation }) => {
-  const navigateToLogin = () => {
-    return navigation.navigate("Login");
-  };
   const { user, logout } = useProfile();
 
-  return (
-    <View style={styles.main}>
+  const renderHeader = () => (
+    <>
       {user ? (
         <>
-          <UserInfo user={user} />
-          <View style={{ flex: 1 }}></View>
-          <TouchableOpacity style={styles.logout} onPress={logout}>
-            <Text style={[styles.text, { fontSize: 16, fontWeight: 500 }]}>
-              Log out
+          <UserInfo user={user} logout={logout} />
+          <UserActions />
+          <View style={{ flexDirection: "row", gap: 10 }}>
+            <Icon name="appstore-o" size={25} color={"#ff0083"} />
+            <Text style={{ fontSize: 18, marginBottom: 20, color: "#ff0083" }}>
+              Your advertisements
             </Text>
-          </TouchableOpacity>
+          </View>
         </>
       ) : (
-        <UserInfoEmpty navigateToLogin={navigateToLogin} />
+        <UserInfoEmpty navigateToLogin={() => navigation.navigate("Login")} />
       )}
-    </View>
+    </>
+  );
+
+  return (
+    <FlatList
+      style={styles.main}
+      data={user ? [user] : []}
+      renderItem={null}
+      ListHeaderComponent={renderHeader}
+      ListFooterComponent={
+        user ? <UserAddList email={user.email} navigation={navigation} /> : null
+      }
+      keyExtractor={(item, index) => index.toString()}
+    />
   );
 };
+
+export default Profile;

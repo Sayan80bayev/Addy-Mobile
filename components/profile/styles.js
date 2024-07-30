@@ -22,7 +22,10 @@ export const styles = StyleSheet.create({
     marginLeft: 10,
     justifyContent: "center",
   },
-  logout: {
+  button: {
+    flexDirection: "row",
+    gap: 10,
+    flex: 1,
     alignItems: "center",
     backgroundColor: "#FF0083",
     borderRadius: 10,
