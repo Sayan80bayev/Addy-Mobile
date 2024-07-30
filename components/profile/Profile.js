@@ -1,26 +1,28 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { useProfile } from "./hooks";
 import { UserInfo } from "./UserInfo";
 import { styles } from "./styles";
 import { UserInfoEmpty } from "./UserInfoEmpy";
 import { UserActions } from "./UserActions";
+import { UserAddList } from "./UserAddList";
+
 export const Profile = ({ navigation }) => {
-  const navigateToLogin = () => {
-    return navigation.navigate("Login");
-  };
   const { user, logout } = useProfile();
 
   return (
-    <View style={styles.main}>
+    <ScrollView style={styles.main}>
       {user ? (
         <>
           <UserInfo user={user} logout={logout} />
           <UserActions />
+          <UserAddList email={user.email} navigation={navigation} />
         </>
       ) : (
-        <UserInfoEmpty navigateToLogin={navigateToLogin} />
+        <UserInfoEmpty navigateToLogin={() => navigation.navigate("Login")} />
       )}
-    </View>
+    </ScrollView>
   );
 };
+
+export default Profile;

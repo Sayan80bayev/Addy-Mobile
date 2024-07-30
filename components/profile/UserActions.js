@@ -12,7 +12,9 @@ export const UserActions = () => {
 
   return (
     <FlatList
-      style={{ flex: 1, marginTop: 20 }}
+      style={{
+        marginVertical: 20,
+      }}
       data={data}
       renderItem={({ item }) => {
         return (
